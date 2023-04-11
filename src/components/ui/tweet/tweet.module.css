@@ -1,0 +1,70 @@
+.tweet {
+  width: 100%;
+  display: flex;
+  padding: 12px 16px;
+  color: var(--mainColor);
+  column-gap: .75rem;
+  transition: background-color .2s;
+  cursor: pointer;
+  position: relative;
+  background-color: var(--background);
+}
+.tweet:hover {
+  background-color: var(--buttonHover)
+}
+.inReply {
+  cursor: default;
+}
+.inReply:hover {
+  background-color: var(--background)!important;
+}
+.replyBar {
+  background: var(--gray);
+  height: 100%;
+  width: 2px;
+  margin: 0 auto;
+}
+.dataContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.namesContainer {
+  display: flex;
+  gap: .35rem;
+}
+.namesContainer h5 {
+  font-size: 15px;
+  font-weight: bold;
+}
+.namesContainer h5:hover {
+  text-decoration: underline;
+}
+.namesContainer span {
+  color: var(--slugColor);
+}
+.contentContainer {
+  width: 100%;
+  height: max-content;
+}
+.contentContainer p {
+  line-height: 20px;
+  font-size: 15px;
+  word-wrap: break-word;
+  white-space: pre-line;
+  max-width: 500px;
+  ;
+}
+.points {
+  margin: -10px 0 -10px auto;
+  padding: 10px;
+  background-color: transparent;
+  transition: background-color .2s, color .2s;
+  color: white;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.points:hover {
+  background-color: rgba(29, 155, 240, .1);
+  color: rgb(29, 155, 240);
+}

@@ -1,0 +1,16 @@
+{
+  "_id": "6420c7107ca744ce86c6a7ce",
+  "content": "test",
+  "author": {
+      "_id": "6420c535a7ced07a59bf3ae1",
+      "username": "Yonathan Picone",
+      "slug": "",
+      "image": "https://lh3.googleusercontent.com/a/AGNmyxaWFTmNKXnYY1e3fr6R1-Lab6u3nOaFesBmwpdn=s96-c"
+  },
+  "likes": 0,
+  "usersWhoLiked": [],
+  "replies": [],
+  "createdAt": "2023-03-26T22:28:32.678Z",
+  "updatedAt": "2023-03-26T22:28:32.678Z",
+  "__v": 0
+}

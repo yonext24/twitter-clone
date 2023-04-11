@@ -1,0 +1,160 @@
+.navbar {
+  height: 100%;
+  background-color: var(--background);
+  color: var(--mainColor);
+  padding: 0 10px ;
+  display: flex;
+  width: 100%;
+  max-width: 235px;
+  justify-content: center;
+}
+.navbar > div {
+  position: fixed;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  width: 275px;
+}
+.ul {
+  display: flex;
+  flex-direction: column;
+}
+.li {
+  font-size: 15px;
+  display: flex;
+  flex-direction: row-reverse;
+  border-radius: 9999px;
+  width: max-content;
+  padding: 11px 14px;
+  transition: background-color .2s;
+  color: var(--mainColor);
+  cursor: pointer;
+}
+.liContainer {
+  width: 100%;
+  cursor: pointer;
+}
+.li h4 {
+  margin: 0 16px 0 20px;
+  font-size: 20px;
+  font-weight: 400;
+}
+.liContainer:hover .li {
+  background-color: var(--buttonHover);
+}
+.tweetButton {
+  background-color: var(--blue);
+  border-radius: 9999px;
+  min-width: 52px;
+  min-height: 52px;
+  width: 90%;
+  padding: 0 32px;
+  display: grid;
+  place-content: center;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.tweetButton span {
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+  display: block;
+}
+.tweetButton svg {
+  display: none;
+}
+
+.profile {
+  width: 95%;
+  display: flex;
+  border-radius: 9999px;
+  padding: 12px;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  position: relative;
+}
+.profile label {
+  cursor: pointer;
+}
+.profile:hover {
+  background-color: var(--buttonHover);
+}
+.profile img {
+  height: 40px;
+  width: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: 9999px;
+}
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px
+}
+.nameContainer span {
+  font-weight: bold;
+}
+.nameContainer label {
+  color: rgba(255, 255, 255, .4);
+}
+.moreContainer {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media only screen and (max-width: 1280px) {
+  .li h4 {
+    display: none;
+  }
+  .li {
+    display: grid;
+    place-content: center;
+    aspect-ratio: 1/1;
+    min-width: unset;
+  }
+  .navbar {
+    min-width: 86px;
+    justify-content: flex-end;
+    width: auto;
+    max-width: unset;
+  }
+  .navbar > div {
+    width: unset;
+  }
+  .ul {
+    width: 58px;
+  }
+  .liContainer {
+    min-width: unset;
+  }
+  .profile {
+    width: max-content;
+  }
+  .profile > div {
+    display: none!important;
+  }
+  .tweetButton {
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    min-width: unset;
+    min-height: 50px;
+  }
+  .tweetButton span {
+    display: none;
+  }
+  .tweetButton svg {
+    display: block;
+  }
+}
+@media only screen and (max-width: 710px) {
+  .navbar {
+    padding: 0 2px;
+  }
+}

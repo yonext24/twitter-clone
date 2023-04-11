@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  padding: .45rem 1rem;
+  border-bottom: 1px solid var(--borderColor);
+  background-color: var(--background);
+  position: relative;
+}
+.container img {
+  border-radius: 9999px;
+  margin-right: 12px;
+}
+.inputContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.everyone {
+  border: 1px solid rgb(83, 100, 113);
+}
+.everyone, .reply {
+  display: flex;
+  padding: 1px 15px;
+  border-radius: 9999px;
+  width: max-content;
+  align-items: center;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: bold;
+  column-gap: 8px;
+  transition: background-color .2s;
+  cursor: pointer;
+}
+.everyone:hover, .reply:hover {
+  background-color: rgba(29, 155, 240, .1);
+}
+.inputContainer textarea {
+  resize: none;
+  background-color: var(--background);
+  border: none;
+  color: white;
+  padding: 5px;
+  font-size: 20px;
+  line-height: 24px;
+  margin-top: 23px;
+}
+.inputContainer textarea:focus-visible {
+  outline: none;
+}
+.reply {
+  margin-top: 10px;
+  padding: 2px 10px;
+  font-size: 14px;
+  column-gap: 3px;
+}
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(255,255,255,.2);
+  margin-top: 12px;
+}

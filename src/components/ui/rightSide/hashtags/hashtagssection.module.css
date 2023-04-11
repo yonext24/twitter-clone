@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  border-radius: 16px;
+  background-color: var(--sidebarColor);
+  padding: 4px 0;
+}
+.container > div, .container > p {
+  padding: 10px 16px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* ESTO ES EL ESTILADO DE EL INPUT DEL SEARCH!!!!!!! */ 
+.input:focus ~ .wrapper {
+  border: 1px solid var(--blue)!important;
+}
+.input:focus {
+  outline: none
+}
+.input:focus ~ .svg {
+  color: var(--blue)!important
+}
