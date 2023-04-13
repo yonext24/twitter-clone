@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 export function useGetTweets () {
   const [sectionSelected, setSectionSelected] = useState('foryou')
   const [tweets, setTweets] = useState([])
+  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(1)
 
   const addTweet = (tweet) => {
