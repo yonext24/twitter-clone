@@ -64,7 +64,8 @@ export const options = {
       session.user = { ...user, slug: interactions.slug }
       return session
     }
-  }
+  },
+  secret: process.env.SECRET
 }
 
 export default NextAuth(options)
