@@ -1,5 +1,6 @@
 import { changeSlug } from '@/assets/consts'
 import debounce from 'just-debounce-it'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useMutation } from 'react-query'
 
@@ -10,6 +11,9 @@ export function useCreateSlug (closeModal) {
     success: '',
     loading: false
   })
+
+  const { data } = useSession()
+  const user = data?.user
 
   useEffect(() => {
     document.querySelector('html').style.overflow = 'hidden'
@@ -32,7 +36,8 @@ export function useCreateSlug (closeModal) {
   const handleSlugChange = useCallback(
     (slug) => {
       mutate(slug)
-    }, [mutate]
+      user.slug = slug
+    }, [mutate, user]
   )
 
   const createError = useCallback(

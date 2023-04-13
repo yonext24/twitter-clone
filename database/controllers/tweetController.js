@@ -9,6 +9,8 @@ export const getSingleTweet = async (req, res) => {
   const id = req.query.id
   if (!id) return res.status(405).json({ error: 'There are no tweet!' })
 
+  const session = await getServerSession(req, res, options)
+
   if (!isValidObjectId(id)) return res.status(404).json({ error: 'The id is not a valid ObjectId.' })
 
   let tweet
@@ -21,8 +23,32 @@ export const getSingleTweet = async (req, res) => {
   if (!tweet) return res.status(404).json({ error: `Tweet with id ${id} was not found.` })
 
   await tweet.populate({
-    path: 'replies'
+    path: 'author'
   })
+  await tweet.populate({
+    path: 'replyingUser'
+  })
+  await tweet.populate({
+    path: 'replies',
+    populate: [
+      { path: 'author' },
+      { path: 'replyingUser', select: ['slug'] }
+    ]
+  })
+
+  if (session) {
+    const user = await UserInteractions.findOne({ _id: session.user.id })
+    const isMainTweetLiked = user.likedTweets.includes(tweet._id)
+
+    const parsedReplies = tweet.replies.map(document => {
+      const match = user.likedTweets.includes(document._id)
+
+      return { ...document._doc, isLiked: match }
+    })
+    tweet._doc.replies = parsedReplies
+
+    return res.status(200).json({ ...tweet._doc, isLiked: isMainTweetLiked })
+  }
 
   return res.status(200).json(tweet)
 }

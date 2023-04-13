@@ -1,7 +1,7 @@
 import { signOut } from 'next-auth/react'
 
 /* eslint-disable react/no-unknown-property */
-export function ProfileModal () {
+export function ProfileModal ({ slug }) {
   return <>
   <div className='container'>
     <span />
@@ -9,7 +9,7 @@ export function ProfileModal () {
       <p>Add an existing account</p>
     </div>
     <div className='entry' onClick={() => signOut({ callbackUrl: '/' })}>
-      <p>Log Out @Yonext24</p>
+      <p>Log Out @{slug}</p>
     </div>
   </div>
 

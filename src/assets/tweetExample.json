@@ -1,16 +1,41 @@
 {
-  "_id": "6420c7107ca744ce86c6a7ce",
-  "content": "test",
+  "_id": "64384541b06afa95c34e898f",
+  "content": "Im the admin!!!!!!!!1",
   "author": {
-      "_id": "6420c535a7ced07a59bf3ae1",
+      "_id": "64233b6a03019a770ae74dd5",
       "username": "Yonathan Picone",
-      "slug": "",
-      "image": "https://lh3.googleusercontent.com/a/AGNmyxaWFTmNKXnYY1e3fr6R1-Lab6u3nOaFesBmwpdn=s96-c"
+      "slug": "Administrator",
+      "image": "https://lh3.googleusercontent.com/a/AGNmyxaWFTmNKXnYY1e3fr6R1-Lab6u3nOaFesBmwpdn=s96-c",
+      "role": "user",
+      "tweets": [
+          "64384541b06afa95c34e898f",
+          "6438454db06afa95c34e8994"
+      ],
+      "likedTweets": [],
+      "retweetedTweets": [],
+      "__v": 0
   },
+  "isReplying": false,
+  "replies": [
+      {
+          "_id": "6438454db06afa95c34e8994",
+          "content": ":)",
+          "author": "64233b6a03019a770ae74dd5",
+          "isReplying": true,
+          "replyingTo": "64384541b06afa95c34e898f",
+          "replyingUser": "64233b6a03019a770ae74dd5",
+          "replies": [],
+          "likes": 0,
+          "usersWhoLiked": [],
+          "createdAt": "2023-04-13T18:09:17.780Z",
+          "updatedAt": "2023-04-13T18:09:17.780Z",
+          "__v": 0,
+          "isLiked": false
+      }
+  ],
   "likes": 0,
   "usersWhoLiked": [],
-  "replies": [],
-  "createdAt": "2023-03-26T22:28:32.678Z",
-  "updatedAt": "2023-03-26T22:28:32.678Z",
+  "createdAt": "2023-04-13T18:09:05.264Z",
+  "updatedAt": "2023-04-13T18:09:17.458Z",
   "__v": 0
 }

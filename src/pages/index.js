@@ -5,6 +5,7 @@ import { AppleIcon } from '@/components/icons/login/Apple'
 import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 /* eslint-disable react/no-unknown-property */
 export default function LoginPage () {
@@ -22,6 +23,9 @@ export default function LoginPage () {
   }
 
   return <>
+  <Head>
+    <title>Twitter</title>
+  </Head>
   <main>
     <section className='imageContainer'>
       <Image src='/twitter-banner.webp'

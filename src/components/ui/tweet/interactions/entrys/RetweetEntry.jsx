@@ -3,7 +3,7 @@ import { actions } from '@/assets/consts'
 import { RetweetIcon } from '@/components/icons/tweet/Retweet'
 import { useState } from 'react'
 
-export function RetweetEntry ({ retweets, id }) {
+export function RetweetEntry ({ retweets, id, isInPage = false, width = '1.25rem' }) {
   const [retweetsState, setRetweets] = useState(retweets)
 
   const backgroundColor = 'rgba(0, 186, 124'
@@ -12,9 +12,11 @@ export function RetweetEntry ({ retweets, id }) {
 
     <button className='container' onClick={() => actions.retweet(id, setRetweets)}>
       <div className='svgContainer'>
-        <RetweetIcon retweets={retweets} />
+        <RetweetIcon retweets={retweets} width={width} />
       </div>
-      <span>{retweetsState}</span>
+      {
+        isInPage && <span>{retweetsState || ''}</span>
+      }
     </button>
 
     <style jsx>{`

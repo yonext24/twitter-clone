@@ -4,7 +4,6 @@ export const HeartIcon = ({ liked, ...props }) => (
     aria-hidden="true"
     className="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"
     fill="currentColor"
-    width='1.25rem'
     style={{ transition: 'color .2s' }}
     {...props}
   >

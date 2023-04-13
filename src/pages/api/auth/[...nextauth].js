@@ -59,8 +59,9 @@ export const options = {
         return false
       }
     },
-    async session ({ session, token, user }) {
-      session.user = user
+    async session ({ session, user }) {
+      const interactions = await UserInteractions.findOne({ _id: user.id }).lean()
+      session.user = { ...user, slug: interactions.slug }
       return session
     }
   }

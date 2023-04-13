@@ -31,7 +31,6 @@
 }
 .namesContainer {
   display: flex;
-  gap: .35rem;
 }
 .namesContainer h5 {
   font-size: 15px;
@@ -42,6 +41,15 @@
 }
 .namesContainer span {
   color: var(--slugColor);
+}
+.date {
+  color: var(--dateColor);
+  margin-top: 1rem;
+  margin-bottom: 5px;;
+}
+.namesContainer > div {
+  display: flex;
+  column-gap: 6px;
 }
 .contentContainer {
   width: 100%;
@@ -56,6 +64,8 @@
   ;
 }
 .points {
+  height: 44px;
+  width: 44px;
   margin: -10px 0 -10px auto;
   padding: 10px;
   background-color: transparent;

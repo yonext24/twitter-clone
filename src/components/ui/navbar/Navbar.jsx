@@ -17,11 +17,14 @@ import styles from './navbar.module.css'
 import { WriteTweetModalContext } from '@/contexts/WriteTweetModalContext'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
 import Link from 'next/link'
+import { GithubIcon } from '@/components/icons/navbar/Github'
 
 export function Navbar () {
   const { open, closeModal, openModal } = useModal()
   const { dispatch } = useContext(WriteTweetModalContext)
   const { data } = useSession()
+  const user = data?.user
+  console.log(data)
 
   return <nav className={styles.navbar}>
     {
@@ -32,7 +35,7 @@ export function Navbar () {
         <li className={styles.li}>
           <TwitterIcon color='rgb(214, 217, 219)' width='2rem' height='2rem' />
         </li>
-          <Link href='/home' style={{ textDecoration: 'none' }}className={styles.liContainer}>
+          <Link href='/home' className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name} style={{ fontWeight: 'bold' }} >Home</h4>
               <HomeIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={true} />
@@ -58,10 +61,16 @@ export function Navbar () {
           </div>
           <div className={styles.liContainer}>
             <li className={styles.li}>
-              <h4 className={styles.name}>Saved</h4>
+              <h4 className={styles.name}>Bookmarks</h4>
               <SavedIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={false} />
             </li>
           </div>
+          <Link href='https://github.com/yonext24/twitter-clone' target='_blank' rel='noreferrer' className={styles.liContainer}>
+            <li className={styles.li}>
+              <h4 className={styles.name}>Github</h4>
+              <GithubIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={false} />
+            </li>
+          </Link>
           <div className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name}>Profile</h4>
@@ -79,16 +88,16 @@ export function Navbar () {
             <span>Tweet</span>
           </button>
       </ul>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative', margin: '-6px' }}>
         {
-          open && <ProfileModal />
+          open && <ProfileModal slug={user?.slug} />
         }
       <button className={styles.profile} onClick={() => open ? closeModal() : openModal()}>
           <ImageWithPlaceholder image={data?.user?.image} height={50} width={50} alt='Your profile image' />
           <div style={{ display: 'flex', flexGrow: '1' }}>
             <div className={styles.nameContainer}>
-              <span>putoelkelee</span>
-              <label>@Yonext24</label>
+              <span>{user?.name}</span>
+              <label style={{ textAlign: 'left' }}>@{user?.slug}</label>
             </div>
             <div className={styles.moreContainer}>
               <PointsIcon height='1.25rem' />

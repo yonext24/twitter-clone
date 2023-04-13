@@ -6,10 +6,13 @@ import { GifIcon } from '@/components/icons/writeTweet/Gif'
 import { PollIcon } from '@/components/icons/writeTweet/Poll'
 import { UbicationIcon } from '@/components/icons/writeTweet/Ubication'
 
-export function WriteTweetFooter ({ disabled, handleClick, isLoading }) {
+export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetPage, focused }) {
   return <>
   <div className='container'>
-    <div className='iconsDiv'>
+    {
+      isInTweetPage && !focused.footer
+        ? null
+        : <div className='iconsDiv'>
       <button className='icon'>
         <GaleryIcon height={ isLoading ? '0px' : '20px' } />
       </button>
@@ -29,6 +32,7 @@ export function WriteTweetFooter ({ disabled, handleClick, isLoading }) {
         <UbicationIcon height={ isLoading ? '0px' : '20px' } />
       </button>
     </div>
+    }
       <button className='tweet' disabled={disabled} onClick={handleClick}>{!isLoading && 'Tweet'}</button>
   </div>
   <style jsx>{`

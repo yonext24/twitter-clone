@@ -2,10 +2,12 @@ import { createTweet } from '@/assets/consts'
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 
-export function useCreateTweet ({ iniciated, addTweet, setValue }) {
+export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }) {
   const [focused, setFocused] = useState({
+    focused: false,
     rest: iniciated,
-    everyone: iniciated
+    everyone: iniciated,
+    footer: false
   })
 
   const { mutate, isLoading, isError, isSuccess } = useMutation({
@@ -22,14 +24,21 @@ export function useCreateTweet ({ iniciated, addTweet, setValue }) {
   }, [mutate])
 
   useEffect(() => {
-    if (focused.rest && !iniciated) {
+    if (focused.focused && !iniciated && !isInTweetPage) {
+      setFocused(prev => ({ ...prev, rest: true }))
       const timeout = setTimeout(() => {
         setFocused(prev => ({ ...prev, everyone: true }))
       }, 300)
 
       return () => { clearTimeout(timeout) }
+    } else if (isInTweetPage && focused.focused) {
+      const timeout = setTimeout(() => {
+        setFocused(prev => ({ ...prev, footer: true }))
+      }, 300)
+
+      return () => { clearTimeout(timeout) }
     }
-  }, [focused.rest])
+  }, [focused.focused])
 
   return { handleTweet, isLoading, isError, isSuccess, focused, setFocused }
 }

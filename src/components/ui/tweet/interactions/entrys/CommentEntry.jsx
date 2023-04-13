@@ -1,15 +1,18 @@
 /* eslint-disable react/no-unknown-property */
 import { CommentIcon } from '@/components/icons/tweet/Comment'
-export function CommentEntry ({ comments, openReply }) {
+
+export function CommentEntry ({ comments, openReply, isInPage = false, width = '1.25rem' }) {
   const backgroundColor = 'rgba(29, 155, 240'
 
   return <>
 
     <button className='container' onClick={openReply}>
       <div className='svgContainer'>
-        <CommentIcon comments={comments} />
+        <CommentIcon width={width} />
       </div>
-      <span>{comments}</span>
+      {
+        !isInPage && <span>{comments}</span>
+      }
     </button>
 
     <style jsx>{`
@@ -17,7 +20,8 @@ export function CommentEntry ({ comments, openReply }) {
           display: flex;
           align-items: center;
           color: var(--slugColor);
-          margin: -8px 0
+          margin: -8px 0;
+          cursor: pointer;
         }
         .svgContainer {
           padding: 8px;
