@@ -9,10 +9,10 @@ export function TweetsSection ({ sectionSelected, setSectionSelected, tweets, ad
     <TweetSectionHeader sectionSelected={sectionSelected} setSectionSelected={setSectionSelected} />
     <WriteTweetMain addTweet={addTweet} />
     {
-      isLoading && <Spinner style={{ margin: '10px auto 0 auto' }} />
+      tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />)
     }
     {
-      tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />)
+      isLoading && <Spinner style={{ margin: '15px auto' }} />
     }
     {
       error && <span style={{ color: 'red', textAlign: 'center', display: 'block' }}>{error.message}</span>

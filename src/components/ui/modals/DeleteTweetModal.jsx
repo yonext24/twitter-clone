@@ -16,7 +16,6 @@ export function DeleteTweetModal ({ closeModal, setDeleted, id }) {
   const handleClick = async () => {
     deleteTweet(id)
       .then(res => {
-        console.log(res)
         if (res.ok) {
           setDeleted(true)
         }

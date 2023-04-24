@@ -6,7 +6,6 @@ export function LoadingTweet ({ isLoading, isSuccess, isError }) {
   const [showing, setShowing] = useState(true)
 
   const timeoutRef = useRef()
-  console.log(isLoading)
 
   useEffect(() => {
     if (isLoading) {

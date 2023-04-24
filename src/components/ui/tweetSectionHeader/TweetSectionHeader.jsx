@@ -9,17 +9,17 @@ export function TweetSectionHeader ({ sectionSelected, setSectionSelected }) {
       <button className={styles.button} onClick={() => setSectionSelected('foryou')}>
         <div>
             <div className={styles.spanContainer}>
-              <span style={{ fontWeight: sectionSelected === 'foryou' ? 'bold' : 'normal', color: sectionSelected === 'foryou' ? 'var(--mainColor)' : 'var(--slugColor)' }}>For You</span>
+              <span style={{ fontWeight: sectionSelected === 'foryou' ? 'bold' : '500', color: sectionSelected === 'foryou' ? 'var(--mainColor)' : 'var(--dateColor)' }}>For you</span>
             </div>
-            <div style={{ width: '100%', height: 4, borderRadius: 5, backgroundColor: sectionSelected === 'foryou' ? 'var(--blue)' : 'transparent' }}></div>
+            <div style={{ width: '100%', height: 4, borderRadius: 5, margin: '-4px 0 0', backgroundColor: sectionSelected === 'foryou' ? 'var(--blue)' : 'transparent' }}></div>
         </div>
       </button>
       <button className={styles.button} onClick={() => setSectionSelected('following')}>
         <div>
             <div className={styles.spanContainer}>
-              <span style={{ fontWeight: sectionSelected === 'following' ? 'bold' : 'normal', color: sectionSelected === 'following' ? 'var(--mainColor)' : 'var(--slugColor)' }}>Following</span>
+              <span style={{ fontWeight: sectionSelected === 'following' ? 'bold' : '500', color: sectionSelected === 'following' ? 'var(--mainColor)' : 'var(--dateColor)' }}>Following</span>
             </div>
-            <div style={{ width: '100%', height: 4, borderRadius: 5, backgroundColor: sectionSelected === 'following' ? 'var(--blue)' : 'transparent' }}></div>
+            <div style={{ width: '100%', height: 4, borderRadius: 5, margin: '-4px 0 0', backgroundColor: sectionSelected === 'following' ? 'var(--blue)' : 'transparent' }}></div>
         </div>
       </button>
     </div>

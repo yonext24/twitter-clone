@@ -4,6 +4,7 @@ import dbConnect from '../dbConnect'
 import Tweet from '../models/Tweet'
 import UserInteractions from '../models/UserInteractions'
 import { isValidObjectId } from 'mongoose'
+import { deleteImage } from '@firebase/utils'
 
 export const getSingleTweet = async (req, res) => {
   const id = req.query.id
@@ -57,24 +58,30 @@ export const createTweet = async (req, res) => {
   try {
     JSON.parse(req.body)
   } catch {
-    return res.state(406).json({ error: 'Expected json' })
+    return res.status(406).json({ error: 'Expected json' })
   }
   const { data: body } = JSON.parse(req.body)
-  const { replyingUser, replyingTo, data } = body
+  const { replyingUser, replyingTo, data, image } = body
+  console.log(body)
 
+  const hasImage = Boolean(image?.src)
   const isReplying = Boolean(replyingTo && replyingUser)
 
-  if (!data) return res.state(404).json({ error: 'Expected data' })
+  if (!data && !hasImage) return res.status(404).json({ error: 'Expected data' })
+
   const session = await getServerSession(req, res, options)
   if (!session) return res.status(401).json({ error: 'You are not logged!' })
 
   try {
     await dbConnect()
-    console.log(replyingUser)
     const tweet = new Tweet({
       content: data,
       author: session.user.id,
       isReplying,
+      image: {
+        hasImage,
+        ...(hasImage && { src: image.src, id: image.id, width: image.width, height: image.height, aspectRatio: image.width / image.height })
+      },
       ...(isReplying && {
         replyingUser,
         replyingTo
@@ -114,7 +121,7 @@ export const getTimelineTweets = async (req, res) => {
   try {
     await dbConnect()
 
-    const porPagina = 10
+    const porPagina = 6
     const pagina = req.query.page
     const saltar = (pagina - 1) * porPagina
 
@@ -128,6 +135,8 @@ export const getTimelineTweets = async (req, res) => {
       })
       .populate({ path: 'replyingUser', select: ['slug'] })
 
+    const hasMore = myDocuments.length === porPagina
+
     if (session) {
       const user = await UserInteractions.findOne({ _id: session.user.id })
 
@@ -138,10 +147,10 @@ export const getTimelineTweets = async (req, res) => {
         return { ...document._doc, isLiked: match }
       })
 
-      return res.status(200).json(parsedDocuments)
+      return res.status(200).json({ tweets: parsedDocuments, hasMore })
     }
 
-    return res.status(200).json(myDocuments)
+    return res.status(200).json({ tweets: myDocuments, hasMore })
   } catch (err) {
     console.log(err)
     return res.status(500).send('Error while finding tweets.')
@@ -184,6 +193,10 @@ export const deleteTweet = async (req, res) => {
 
   const tweet = await Tweet.findOne({ _id: tweetId })
   if (tweet.author._id.toString() !== session.user.id && session.user.role !== 'admin') return res.status(406).json({ error: 'You are not authorized' })
+
+  if (tweet.image.hasImage) {
+    await deleteImage(session.user.id, tweet.image.id)
+  }
 
   await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: tweetId } })
   await Tweet.deleteOne({ _id: tweet._id })

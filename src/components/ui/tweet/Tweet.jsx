@@ -11,13 +11,15 @@ import styles from './tweet.module.css'
 import { WriteTweetModalContext } from '@/contexts/WriteTweetModalContext'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
 import { useRouter } from 'next/router'
+import { Slug } from '../common/Slug'
+import { Name } from '../common/Name'
 
 export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false }) {
   const [modalName, setModalName] = useState('')
   const [deleted, setDeleted] = useState(false)
 
-  const { image, username, slug } = tweet.author
-  const { content, createdAt, replies, likes, _id, isLiked } = tweet
+  const { image: userImage, username, slug } = tweet.author
+  const { content, createdAt, replies, likes, _id, isLiked, image } = tweet
   const formattedDate = formatDate(createdAt, isInPage)
   const { data } = useSession()
   const user = data?.user
@@ -31,9 +33,10 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false 
   const router = useRouter()
 
   const handleClick = () => {
-    if (!isInReply || !isInPage) {
-      router.push(`/tweet/${tweet._id}`)
+    if (isInReply || isInPage) {
+      return
     }
+    router.push(`/tweet/${tweet._id}`)
   }
 
   if (deleted) return null
@@ -45,13 +48,13 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false 
     {
       open && modalName === 'delete' && <DeleteTweetModal id={_id} user={user} setDeleted={setDeleted} closeModal={closeModal} />
     }
-    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`} style={{ borderBottom: (!isInReply && !isInPage) && 'var(--borderProperty)', cursor: isInPage ? 'unset' : 'pointer', padding: isInPage && '12px 6px' }}>
+    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`} style={{ borderBottom: (!isInReply && !isInPage) && 'var(--borderProperty)', cursor: isInPage || isInReply ? 'unset' : 'pointer', padding: isInPage && '12px 6px' }}>
       {
-        open && modalName === 'options' && <TweetOptionsModal id={_id} username={username} isOwn={ user.name === username || user?.role === 'admin' } setModalName={setModalName} />
+        open && modalName === 'options' && <TweetOptionsModal id={_id} username={username} isOwn={ user?.name === username || user?.role === 'admin' } setModalName={setModalName} />
       }
       <div>
         {
-          !isInPage && <ImageWithPlaceholder image={image} height={48} width={48} alt='Your profile image' />
+          !isInPage && <ImageWithPlaceholder image={userImage} height={48} width={48} alt='Your profile image' />
         }
           {
             isInReply && <div className={styles.replyBar}></div>
@@ -60,11 +63,11 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false 
       <div className={styles.dataContainer}>
         <div className={styles.namesContainer} style={{ marginBottom: isInPage ? '8px' : '' }}>
             {
-              isInPage && <ImageWithPlaceholder image={image} height={48} width={48} alt='Your profile image' />
+              isInPage && <ImageWithPlaceholder image={userImage} height={48} width={48} alt='Your profile image' animation='left' />
             }
           <div style={{ flexDirection: isInPage ? 'column' : 'row', marginLeft: isInPage ? '15px' : '' }}>
-            <h5>{username}</h5>
-            <span>@{slug}</span>
+            <Name>{username}</Name>
+            <Slug>@{slug}</Slug>
               {
                 !isInPage && <>
                   <span>·</span>
@@ -90,6 +93,24 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false 
         <div className={styles.contentContainer}>
           <p style={{ ...(isInPage && { fontSize: '1.5rem' }) }}>{content}</p>
         </div>
+        {
+          tweet.image.hasImage && <div className={styles.imageContainer}>
+            <ImageWithPlaceholder
+              height={image.height}
+              width={image.width}
+              image={image.src}
+              alt='Tweet image'
+              styles={{
+                borderRadius: 16,
+                width: '100%',
+                height: 'auto',
+                aspectRatio:
+              image.aspectRatio
+              }}
+              animation='bottom'
+            />
+          </div>
+        }
         {
           (!isInReply && !isInPage) && <Interactions id={_id} comments={replies.length} likes={likes} retweets={0} isLiked={isLiked} openReply={openReply} />
         }

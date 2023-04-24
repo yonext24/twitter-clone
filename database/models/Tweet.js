@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const TweetSchema = new mongoose.Schema({
   content: {
     type: String,
-    required: true
+    required: false
   },
   author: {
     type: mongoose.Types.ObjectId,
@@ -40,8 +40,33 @@ const TweetSchema = new mongoose.Schema({
       type: mongoose.Types.ObjectId,
       ref: 'UserInteractions'
     }
-  ]
-
+  ],
+  image: {
+    hasImage: {
+      type: Boolean,
+      default: false
+    },
+    src: {
+      type: String,
+      required: function () { return this.image.hasImage === true }
+    },
+    id: {
+      type: String,
+      required: function () { return this.image.hasImage === true }
+    },
+    width: {
+      type: Number,
+      required: function () { return this.image.hasImage === true }
+    },
+    height: {
+      type: Number,
+      required: function () { return this.image.hasImage === true }
+    },
+    aspectRatio: {
+      type: Number,
+      required: function () { return this.image.hasImage === true }
+    }
+  }
 }, { timestamps: true })
 
 const Tweet = mongoose.models.Tweet || mongoose.model('Tweet', TweetSchema)

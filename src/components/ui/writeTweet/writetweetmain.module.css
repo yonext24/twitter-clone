@@ -9,6 +9,29 @@
   border-radius: 9999px;
   margin-right: 12px;
 }
+.imageContainer { 
+  position: relative;
+}
+.imageContainer button {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background-color: rgba(15, 20, 25, 0.75);
+  transition: background-color .2s;
+  padding: 7px;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: var(--mainColor);
+  z-index: 1;
+}
+.imageContainer button:hover {
+  background-color: rgba(39, 44, 48, 0.75);
+}
+.imageContainer img {
+  border-radius: 16px;
+  width: 100%;
+  cursor: pointer;
+}
 .inputContainer {
   flex: 1;
   display: flex;

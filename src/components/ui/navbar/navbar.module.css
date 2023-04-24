@@ -43,8 +43,15 @@
   font-size: 20px;
   font-weight: 400;
 }
-.liContainer:hover .li {
+.liContainer:hover .li, .twitterIcon:hover {
   background-color: var(--buttonHover);
+}
+.twitterIcon {
+  padding: 0;
+  margin-top: 2px;
+  height: 56px;
+  display: flex;
+  align-items: center;
 }
 .tweetButton {
   background-color: var(--blue);
@@ -120,7 +127,6 @@
     min-width: unset;
   }
   .navbar {
-    min-width: 86px;
     justify-content: flex-end;
     width: auto;
     max-width: unset;
@@ -157,5 +163,10 @@
 @media only screen and (max-width: 710px) {
   .navbar {
     padding: 0 2px;
+  }
+}
+@media only screen and (max-height: 620px) {
+  .liContainer:nth-of-type(3) {
+    display: none;
   }
 }

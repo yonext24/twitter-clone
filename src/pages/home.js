@@ -12,7 +12,7 @@ export default function Home () {
   const { status } = useSession()
 
   const { state } = useContext(WriteTweetModalContext)
-  const { sectionSelected, setSectionSelected, tweets, addTweet, error, isLoading } = useGetTweets()
+  const { sectionSelected, setSectionSelected, tweets, addTweet, error, isLoading, intersectionRef, isRefetching } = useGetTweets()
 
   return (
     <>
@@ -29,8 +29,9 @@ export default function Home () {
           tweets={tweets}
           addTweet={addTweet}
           error={error}
-          isLoading={isLoading}
+          isLoading={isLoading || isRefetching}
         />
+        <div ref={intersectionRef} style={{ height: 1, width: '100%' }}></div>
     </>
   )
 }

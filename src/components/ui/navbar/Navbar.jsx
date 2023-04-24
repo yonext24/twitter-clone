@@ -13,27 +13,29 @@ import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import { ModalBackground } from '../ModalBackground'
 import { ProfileModal } from '../modals/ProfileModal'
-import styles from './navbar.module.css'
 import { WriteTweetModalContext } from '@/contexts/WriteTweetModalContext'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
-import Link from 'next/link'
 import { GithubIcon } from '@/components/icons/navbar/Github'
+import { WindowSizeContext } from '@/contexts/WindowSizeContext'
+import Link from 'next/link'
+import styles from './navbar.module.css'
 
 export function Navbar () {
   const { open, closeModal, openModal } = useModal()
   const { dispatch } = useContext(WriteTweetModalContext)
   const { data } = useSession()
   const user = data?.user
-  console.log(data)
 
-  return <nav className={styles.navbar}>
+  const { size } = useContext(WindowSizeContext)
+
+  return <nav className={styles.navbar} style={{ minWidth: size >= 1000 && 80 }}>
     {
       open && <ModalBackground closeModal={closeModal} />
     }
     <div style={{ zIndex: open ? 1000 : 0 }}>
       <ul className={styles.ul}>
-        <li className={styles.li}>
-          <TwitterIcon color='rgb(214, 217, 219)' width='2rem' height='2rem' />
+        <li className={styles.li + ' ' + styles.twitterIcon}>
+          <TwitterIcon color='rgb(214, 217, 219)' width='50px' height='30px' />
         </li>
           <Link href='/home' className={styles.liContainer}>
             <li className={styles.li}>
@@ -93,7 +95,7 @@ export function Navbar () {
           open && <ProfileModal slug={user?.slug} />
         }
       <button className={styles.profile} onClick={() => open ? closeModal() : openModal()}>
-          <ImageWithPlaceholder image={data?.user?.image} height={50} width={50} alt='Your profile image' />
+          <ImageWithPlaceholder image={data?.user?.image} height={40} width={40} alt='Your profile image' />
           <div style={{ display: 'flex', flexGrow: '1' }}>
             <div className={styles.nameContainer}>
               <span>{user?.name}</span>

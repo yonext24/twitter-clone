@@ -1,21 +1,15 @@
 /* eslint-disable react/no-unknown-property */
-import { actions } from '@/assets/consts'
 import { RetweetIcon } from '@/components/icons/tweet/Retweet'
-import { useState } from 'react'
 
-export function RetweetEntry ({ retweets, id, isInPage = false, width = '1.25rem' }) {
-  const [retweetsState, setRetweets] = useState(retweets)
-
-  const backgroundColor = 'rgba(0, 186, 124'
-
+export function RetweetEntry ({ retweets, isInPage = false, width = '1.25rem' }) {
   return <>
 
-    <button className='container' onClick={() => actions.retweet(id, setRetweets)}>
+    <button className='container'>
       <div className='svgContainer'>
         <RetweetIcon retweets={retweets} width={width} />
       </div>
       {
-        isInPage && <span>{retweetsState || ''}</span>
+        isInPage && <span>{retweets || ''}</span>
       }
     </button>
 
@@ -38,8 +32,8 @@ export function RetweetEntry ({ retweets, id, isInPage = false, width = '1.25rem
           font-size: 13px;
         }
         .container:hover .svgContainer {
-          background-color: ${backgroundColor}, .1);
-          color: ${backgroundColor} )
+          background-color: rgb(var(--accent-green) / .1);
+          color: rgb(var(--accent-green))
         }
     `}</style>
   </>

@@ -49,6 +49,7 @@ export function TweetModal ({ addTweet }) {
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow-y: auto;
     }
     .tweetContainer {
       width: 100%;

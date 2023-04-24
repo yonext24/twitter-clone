@@ -36,7 +36,6 @@ export default function TweetPage () {
     ['getSingleTweet', id],
     () => (id && !tweet ? getSingleTweet(id) : null),
     { retryDelay: 5000, refetchOnWindowFocus: false, refetchInterval: false, onSuccess: setTweet })
-  console.log(tweet)
 
   return <>
     <SEO title={tweet

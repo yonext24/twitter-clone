@@ -1,28 +1,37 @@
+import { HashtagImage } from './HashtagImage'
+
 /* eslint-disable react/no-unknown-property */
-export function Hashtag ({ data }) {
+export function Hashtag ({ type, name, amount, image }) {
   return <>
     <div className='container'>
-      <div>{data.type} · Trending</div>
-      <div>{data.name}</div>
-      <div>{data.amount} Tweets</div>
+      <div className='dataContainer'>
+        <span>{type} · Trending</span>
+        <span>{name}</span>
+        <span>{amount} Tweets</span>
+      </div>
+      {
+        image?.hasImage && <HashtagImage {...image} />
+      }
     </div>
     <style jsx>{`
       .container {
         display: flex;
-        flex-direction: column;
-        row-gap: 2px;
         transition: background-color .2s;
         cursor: pointer;
+        padding: 10px 16px;
       }
       .container:hover {
         background-color: hsla(0,0%,100%,.03);
       }
-      .container * {
+      .dataContainer {
         display: flex;
-        color: var(--slugColor);
-        font-size: 15px
+        flex-direction: column;
+        flex: 1;
+        row-gap: 2px;
+        color: var(--dateColor);
+        font-size: 13px
       }
-      .container div:nth-of-type(2) {
+      .dataContainer span:nth-of-type(2) {
         font-weight: bold;
         font-size: 16px;
         color: var(--mainColor);

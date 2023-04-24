@@ -2,14 +2,24 @@
 import { HeartIcon } from '@/components/icons/tweet/Heart'
 import { useState } from 'react'
 import { likeTweet } from '@/assets/consts'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export function LikeEntry ({ likes, isLiked, id, isInPage = false, width = '1.25rem', handleAddLike }) {
-  console.log(isLiked)
   const [likesState, setLikes] = useState({
     likes,
     isLiked
   })
+
+  const { status } = useSession()
+  const router = useRouter()
+
   const handleLike = () => {
+    if (status === 'unauthenticated') {
+      router.push('/')
+      return
+    }
+
     if (isInPage) {
       handleAddLike(likesState.isLiked)
     }
@@ -20,7 +30,6 @@ export function LikeEntry ({ likes, isLiked, id, isInPage = false, width = '1.25
     likeTweet(id)
   }
 
-  const backgroundColor = 'rgba(249, 24, 128'
   return <>
 
     <button className='container' onClick={handleLike} style={{ color: likesState.isLiked ? 'rgba(249, 24, 128)' : 'inherit' }}>
@@ -52,8 +61,8 @@ export function LikeEntry ({ likes, isLiked, id, isInPage = false, width = '1.25
           font-size: 13px;
         }
         .container:hover .svgContainer {
-          background-color: ${backgroundColor}, .1);
-          color: ${backgroundColor} )
+          background-color: rgb(var(--accent-pink) / .1);
+          color: rgb(var(--accent-pink))
         }
     `}</style>
   </>

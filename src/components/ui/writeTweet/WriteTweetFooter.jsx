@@ -6,16 +6,18 @@ import { GifIcon } from '@/components/icons/writeTweet/Gif'
 import { PollIcon } from '@/components/icons/writeTweet/Poll'
 import { UbicationIcon } from '@/components/icons/writeTweet/Ubication'
 
-export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetPage, focused }) {
+export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetPage, focused, handleFile, inputRef }) {
   return <>
   <div className='container'>
     {
       isInTweetPage && !focused.footer
         ? null
         : <div className='iconsDiv'>
-      <button className='icon'>
+      <div className='icon file'>
+        <input ref={inputRef} id='image' type='file' accept="image/png, image/jpeg" onChange={handleFile} style={{ display: 'none' }} />
+        <label htmlFor='image'></label>
         <GaleryIcon height={ isLoading ? '0px' : '20px' } />
-      </button>
+      </div>
       <button className='icon'>
         <GifIcon height={ isLoading ? '0px' : '20px' } />
       </button>
@@ -49,6 +51,18 @@ export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetP
       transition: max-height .2s;
       max-height: ${isLoading ? '0px' : '100px'}
       display: flex;
+    }
+    .file.icon {
+      display: inline-flex;
+      position: relative;
+    }
+    .file.icon label {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
     }
     .icon {
       padding: ${isLoading ? '0' : '.5rem'};

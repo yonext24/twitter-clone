@@ -63,6 +63,13 @@
   max-width: 500px;
   ;
 }
+.imageContainer {
+  width: 100%;
+  margin: 10px 0;
+}
+.imageContainer img {
+  border-radius: 16px;
+}
 .points {
   height: 44px;
   width: 44px;

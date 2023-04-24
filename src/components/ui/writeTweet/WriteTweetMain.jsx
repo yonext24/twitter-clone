@@ -7,6 +7,7 @@ import { useCreateTweet } from '@/hooks/useCreateTweet'
 import { LoadingTweet } from './LoadingTweet'
 import { useSession } from 'next-auth/react'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
+import { DeleteImageIcon } from '@/components/icons/tweet/DeleteImage'
 
 export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetPage = false, replyingTo }) {
   const [value, setValue] = useState('')
@@ -14,7 +15,7 @@ export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetP
   const { data } = useSession()
   const user = data?.user
 
-  const { handleTweet, isLoading, isSuccess, focused, setFocused, isError } = useCreateTweet({ value, iniciated, isInTweetPage, addTweet, reply, setValue })
+  const { handleTweet, isLoading, isSuccess, focused, setFocused, isError, handleFile, handleFileClear, image, inputRef } = useCreateTweet({ value, iniciated, isInTweetPage, addTweet, reply, setValue })
 
   return <div className={styles.container}>
     <LoadingTweet isLoading={isLoading} isSuccess={isSuccess} isError={isError} />
@@ -39,6 +40,16 @@ export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetP
         style={{ marginTop: focused && iniciated ? 23 : 10, height: iniciated ? '120px' : 'unset', flex: isInTweetPage && !focused.footer && 1 }}
       />
       {
+        image && <div className={styles.imageContainer}>
+          {
+            !isLoading && <button onClick={handleFileClear}>
+            <DeleteImageIcon height='18px' width='18px' />
+          </button>
+          }
+          <img src={URL.createObjectURL(image)} alt='Image that you are uploading' />
+        </div>
+      }
+      {
         focused.rest && !isInTweetPage && <>
         <button className={styles.reply} style={{ maxHeight: isLoading ? '0px' : '1.5rem', transition: 'max-height .2s', margin: isLoading && 0 }}>
           <WorldIcon width='1rem' height={isLoading ? '0' : '1rem'} />
@@ -51,7 +62,7 @@ export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetP
         }
       </>
       }
-      <WriteTweetFooter handleClick={() => { handleTweet(value, reply) }} disabled={value.length === 0} isLoading={isLoading} isInTweetPage={isInTweetPage} focused={focused} />
+      <WriteTweetFooter handleClick={() => { handleTweet(value, reply) }} disabled={value.trim().length === 0 && !image} inputRef={inputRef} handleFile={handleFile} isLoading={isLoading} isInTweetPage={isInTweetPage} focused={focused} />
     </div>
   </div>
 }

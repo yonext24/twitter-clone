@@ -2,8 +2,6 @@
 import { CommentIcon } from '@/components/icons/tweet/Comment'
 
 export function CommentEntry ({ comments, openReply, isInPage = false, width = '1.25rem' }) {
-  const backgroundColor = 'rgba(29, 155, 240'
-
   return <>
 
     <button className='container' onClick={openReply}>
@@ -11,7 +9,7 @@ export function CommentEntry ({ comments, openReply, isInPage = false, width = '
         <CommentIcon width={width} />
       </div>
       {
-        !isInPage && <span>{comments}</span>
+        !isInPage && <span>{comments || ''}</span>
       }
     </button>
 
@@ -35,8 +33,8 @@ export function CommentEntry ({ comments, openReply, isInPage = false, width = '
           font-size: 13px;
         }
         .container:hover .svgContainer {
-          background-color: ${backgroundColor}, .1);
-          color: ${backgroundColor} )
+          background-color: rgb(var(--accent-blue) / .1);
+          color: rgb(var(--accent-blue))
         }
     `}</style>
   </>

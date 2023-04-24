@@ -1,3 +1,4 @@
+import { uploadImages } from '@firebase/utils'
 import { DateTime } from 'luxon'
 
 export const AVAILABLE_USER_STATES = {
@@ -26,19 +27,42 @@ export function getTimeline (page) {
   return fetch('/api/timeline?page=' + page)
     .then(res => res.json())
 }
-export function createTweet (value) {
-  return fetch('/api/tweet', {
-    method: 'POST',
-    body: JSON.stringify({ data: value })
+
+export async function createTweet (data) {
+  return new Promise((resolve, reject) => {
+    if (data.imageToUploadData?.hasImage) {
+      uploadImages(data.imageToUploadData.userId, data.imageToUploadData.image)
+        .then(image => {
+          console.log(image)
+          fetch('/api/tweet', {
+            method: 'POST',
+            body: JSON.stringify({ data: { ...data.data, image } })
+          })
+            .then(res => res.json())
+            .then(json => {
+              if (!json.error) resolve(json)
+              else {
+                reject(json.error)
+              }
+            })
+        })
+        .catch(reject)
+    } else {
+      fetch('/api/tweet', {
+        method: 'POST',
+        body: JSON.stringify({ data: data.data })
+      })
+        .then(res => res.json())
+        .then(json => {
+          if (!json.error) resolve(json)
+          else {
+            reject(json.error)
+          }
+        })
+    }
   })
-    .then(res => res.json())
-    .then(json => {
-      if (!json.error) return new Promise(resolve => resolve(json))
-      else {
-        throw new Error(json.error)
-      }
-    })
 }
+
 export function likeTweet (id) {
   // No se puede utilizar en useMutate
   fetch('/api/tweet', {
@@ -93,4 +117,23 @@ export const formatDate = (createdAt, inPage) => {
   }
 
   return formattedDate
+}
+export async function getImageDimensions (inputFile) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = e => {
+      const img = new Image()
+
+      img.onload = function () {
+        resolve({ width: img.width, height: img.height })
+      }
+
+      img.src = e.target.result
+    }
+
+    reader.onabort = reject
+
+    reader.readAsDataURL(inputFile)
+  })
 }

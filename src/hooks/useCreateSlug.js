@@ -65,7 +65,6 @@ export function useCreateSlug (closeModal) {
         body: username
       })
       const data = await res.json()
-      console.log(data)
 
       if (data.error) {
         createError(data.error)

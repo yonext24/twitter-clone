@@ -1,6 +1,6 @@
 import { SearchIcon } from '@/components/icons/navbar/Search'
 import { useRef } from 'react'
-import styles from '../hashtags/hashtagssection.module.css'
+import styles from '../aside.module.css'
 
 // La parte del focus del input esta hecha en ../hashtagssection.module.css
 /* eslint-disable react/no-unknown-property */
@@ -8,7 +8,6 @@ export function Search () {
   const inputRef = useRef()
 
   const handleClick = () => {
-    console.log(inputRef)
     inputRef?.current.focus()
   }
 
@@ -25,6 +24,7 @@ export function Search () {
       width: 100%;
       padding: 5px 0;
       position: sticky;
+      z-index: 1;
       top: 0;
       background-color: var(--background)
     }

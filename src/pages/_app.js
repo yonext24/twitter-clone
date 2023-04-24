@@ -1,3 +1,4 @@
+import { WindowSizeContextProvider } from '@/contexts/WindowSizeContext'
 import { WriteTweetModalContextProvider } from '@/contexts/WriteTweetModalContext'
 import '@/styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
@@ -13,12 +14,15 @@ export default function App ({ Component, pageProps: { session, ...pageProps } }
     <SessionProvider session={session}>
 
       <QueryClientProvider client={queryClient}>
+        <WindowSizeContextProvider>
 
-        <WriteTweetModalContextProvider>
+          <WriteTweetModalContextProvider>
 
-          {getLayout(createElement(Component, pageProps))}
+            {getLayout(createElement(Component, pageProps))}
 
-        </WriteTweetModalContextProvider>
+          </WriteTweetModalContextProvider>
+
+        </WindowSizeContextProvider>
 
       </QueryClientProvider>
 

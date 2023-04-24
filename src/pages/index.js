@@ -6,6 +6,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Link from 'next/link'
 
 /* eslint-disable react/no-unknown-property */
 export default function LoginPage () {
@@ -59,9 +60,11 @@ export default function LoginPage () {
             <div></div>
             <span>or</span>
           </div>
-          <button onClick={handleLogin} style={{ cursor: 'not-allowed' }} className='email'>
-            <span>Sign up with phone or email</span>
-          </button>
+          <Link href='/home' className='email' style={{ textDecoration: 'none' }}>
+            <div className='email'>
+              <span>Continue as a guest {':)'}</span>
+            </div>
+          </Link>
         </div>
 
       </div>
@@ -104,7 +107,7 @@ export default function LoginPage () {
       row-gap: .75rem;
       max-width: 320px;
     }
-    .loginContainer button {
+    .loginContainer button, .email {
       background-color: white;
       color: black;
       display: flex;
@@ -119,8 +122,9 @@ export default function LoginPage () {
       color: white!important;
       margin-bottom: 2rem!important;
     }
-    .loginContainer button span {
+    .loginContainer button span, .email span {
       font-size: 100%;
+      text-decoration: none;
     }
     .or {
       display: flex;
