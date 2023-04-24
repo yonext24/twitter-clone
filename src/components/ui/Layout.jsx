@@ -4,16 +4,20 @@ import { Aside } from './rightSide/Aside'
 import { useEffect } from 'react'
 import { useModal } from '@/hooks/useModal'
 import { CreateSlugModal } from './modals/CreateSlugModal'
+import { useSession } from 'next-auth/react'
 
 export function Layout ({ children }) {
   const { openModal, closeModal, open } = useModal()
+  const { status } = useSession()
 
   useEffect(() => {
-    const hasSlug = localStorage.getItem('slugSetted')
-    if (hasSlug === null) {
-      openModal()
+    if (status === 'authenticated') {
+      const hasSlug = localStorage.getItem('slugSetted')
+      if (hasSlug === null) {
+        openModal()
+      }
     }
-  }, [])
+  }, [status])
 
   return <div className={styles.div} style={{ position: 'relative' }}>
     {
