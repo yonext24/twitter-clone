@@ -3,5 +3,9 @@
   min-height: calc(100% - 1px);
   border-left: var(--borderProperty);
   border-right: var(--borderProperty);
-
+}
+@media only screen and (max-width: 1000px) {
+  .section {
+    min-height: calc(100vh - 1px)
+  }
 }

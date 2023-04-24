@@ -91,7 +91,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false 
           )
         }
         <div className={styles.contentContainer}>
-          <p style={{ ...(isInPage && { fontSize: '1.5rem' }) }}>{content}</p>
+          <p style={{ ...(isInPage && { fontSize: '1.5rem', lineHeight: '1.6rem' }) }}>{content}</p>
         </div>
         {
           tweet.image.hasImage && <div className={styles.imageContainer}>

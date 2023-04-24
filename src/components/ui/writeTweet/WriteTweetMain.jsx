@@ -12,14 +12,18 @@ import { DeleteImageIcon } from '@/components/icons/tweet/DeleteImage'
 export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetPage = false, replyingTo }) {
   const [value, setValue] = useState('')
 
-  const { data } = useSession()
+  const { data, status } = useSession()
   const user = data?.user
 
   const { handleTweet, isLoading, isSuccess, focused, setFocused, isError, handleFile, handleFileClear, image, inputRef } = useCreateTweet({ value, iniciated, isInTweetPage, addTweet, reply, setValue })
 
   return <div className={styles.container}>
     <LoadingTweet isLoading={isLoading} isSuccess={isSuccess} isError={isError} />
-    <ImageWithPlaceholder image={user?.image} height={50} width={50} alt='Your profile image' />
+    {
+      status === 'loading' || status === 'authenticated'
+        ? <ImageWithPlaceholder styles={{ marginRight: 12 }} image={user?.image} height={50} width={50} alt='Your profile image' />
+        : <ImageWithPlaceholder styles={{ marginRight: 12 }} image={'/guest.webp'} height={50} width={50} alt='Your profile image' />
+    }
     <div className={styles.inputContainer} style={{ ...(isInTweetPage && !focused.footer && { flexDirection: 'row', alignItems: 'center' }) }}>
       {
         isInTweetPage && focused.footer && <p className={styles.replyingTo} >Replying to <span>@{replyingTo}</span></p>

@@ -23,7 +23,7 @@ import styles from './navbar.module.css'
 export function Navbar () {
   const { open, closeModal, openModal } = useModal()
   const { dispatch } = useContext(WriteTweetModalContext)
-  const { data } = useSession()
+  const { data, status } = useSession()
   const user = data?.user
 
   const { size } = useContext(WindowSizeContext)
@@ -95,12 +95,19 @@ export function Navbar () {
           open && <ProfileModal slug={user?.slug} />
         }
       <button className={styles.profile} onClick={() => open ? closeModal() : openModal()}>
-          <ImageWithPlaceholder image={data?.user?.image} height={40} width={40} alt='Your profile image' />
+        {
+          status === 'loading' || status === 'authenticated'
+            ? <ImageWithPlaceholder image={data?.user?.image} height={40} width={40} alt='Your profile image' />
+            : <ImageWithPlaceholder image={'/guest.webp'} height={40} width={40} alt='Yout guest image' />
+        }
           <div style={{ display: 'flex', flexGrow: '1' }}>
-            <div className={styles.nameContainer}>
-              <span>{user?.name}</span>
-              <label style={{ textAlign: 'left' }}>@{user?.slug}</label>
-            </div>
+            {
+              status === 'authenticated' &&
+              <div className={styles.nameContainer}>
+                <span>{user?.name}</span>
+                <label style={{ textAlign: 'left' }}>@{user?.slug}</label>
+              </div>
+            }
             <div className={styles.moreContainer}>
               <PointsIcon height='1.25rem' />
             </div>
