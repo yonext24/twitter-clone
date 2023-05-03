@@ -4,7 +4,7 @@ import { CommentEntry } from './entrys/CommentEntry'
 import { LikeEntry } from './entrys/LikeEntry'
 import { RetweetEntry } from './entrys/RetweetEntry'
 
-export function Interactions ({ likes, comments, retweets, id, isLiked, openReply }) {
+export function Interactions ({ likes, comments, retweets, id, isLiked, openReply, isStretch }) {
   return <>
     <div onClick={e => e.stopPropagation()}>
       <LikeEntry id={id} likes={likes} isLiked={isLiked} />
@@ -17,7 +17,7 @@ export function Interactions ({ likes, comments, retweets, id, isLiked, openRepl
         display: flex;
         column-gap: 8px;
         margin: 12px 0 0;
-        width: 50%;
+        width: ${isStretch ? '80%' : '50%'};
         justify-content: space-between;
       }
     `}</style>

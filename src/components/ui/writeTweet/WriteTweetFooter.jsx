@@ -5,8 +5,10 @@ import { GaleryIcon } from '@/components/icons/writeTweet/Galery'
 import { GifIcon } from '@/components/icons/writeTweet/Gif'
 import { PollIcon } from '@/components/icons/writeTweet/Poll'
 import { UbicationIcon } from '@/components/icons/writeTweet/Ubication'
+import { useId } from 'react'
 
-export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetPage, focused, handleFile, inputRef }) {
+export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetPage, focused, handleFile, inputRef, noPadding, noIcons }) {
+  const imageId = useId()
   return <>
   <div className='container'>
     {
@@ -14,35 +16,44 @@ export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetP
         ? null
         : <div className='iconsDiv'>
       <div className='icon file'>
-        <input ref={inputRef} id='image' type='file' accept="image/png, image/jpeg" onChange={handleFile} style={{ display: 'none' }} />
-        <label htmlFor='image'></label>
+        <input ref={inputRef} id={imageId} type='file' accept="image/png, image/jpeg" onChange={handleFile} style={{ display: 'none' }} />
+        <label htmlFor={imageId}></label>
         <GaleryIcon height={ isLoading ? '0px' : '20px' } />
       </div>
       <button className='icon'>
         <GifIcon height={ isLoading ? '0px' : '20px' } />
       </button>
-      <button className='icon'>
-        <PollIcon height={ isLoading ? '0px' : '20px' } />
-      </button>
+      {
+        !noIcons &&
+        <button className='icon'>
+          <PollIcon height={ isLoading ? '0px' : '20px' } />
+        </button>
+      }
       <button className='icon'>
         <EmojiIcon height={ isLoading ? '0px' : '20px' } />
       </button>
-      <button className='icon'>
-        <CalendarIcon height={ isLoading ? '0px' : '20px' } />
-      </button>
+      {
+        !noIcons &&
+        <button className='icon'>
+          <CalendarIcon height={ isLoading ? '0px' : '20px' } />
+        </button>
+      }
       <button className='icon'>
         <UbicationIcon height={ isLoading ? '0px' : '20px' } />
       </button>
     </div>
     }
-      <button className='tweet' disabled={disabled} onClick={handleClick}>{!isLoading && 'Tweet'}</button>
+    {
+      !isLoading &&
+      <button className='tweet' disabled={disabled} onClick={handleClick}>{!isLoading && isInTweetPage ? 'Reply' : 'Tweet'}</button>
+    }
   </div>
   <style jsx>{`
 
     .container {
       display: flex;
       color: var(--blue);
-      margin-top: ${isLoading ? '0' : '12px'};
+      margin-top: ${isLoading || focused.footer || noPadding ? '0' : '12px'};
       justify-content: space-between;
       transition: max-height .2s;
       max-height: ${isLoading ? '0px' : '100px'}
@@ -84,7 +95,7 @@ export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetP
       border-radius: 9999px;
       cursor: pointer;
       transition: opacity .2s, max-height .2s;
-      max-height: ${isLoading ? '0px' : '100px'}
+      max-height: ${isLoading ? '0px' : '100px'};
     }
     .tweet:disabled {
       opacity: .5;

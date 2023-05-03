@@ -1,10 +1,20 @@
 import { createTweet } from '@/assets/consts'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMutation } from 'react-query'
+import { toast } from 'react-toastify'
+import { useTweetsContext } from './useTweetsContext'
 
-export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }) {
+const ToastNotif = ({ id }) => {
+  return <>
+  <span>Your tweet was sent.</span>
+  <Link href={'/tweet/' + id} onClick={e => { e.stopPropagation(); toast.dismiss() }} className='Toastify-view-anchor'>View</Link>
+  </>
+}
+
+export function useCreateTweet ({ iniciated, isInTweetPage, addTweet }) {
   const [focused, setFocused] = useState({
     focused: false,
     rest: iniciated,
@@ -12,8 +22,12 @@ export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }
     footer: false
   })
   const [image, setImage] = useState(null)
+  const [value, setValue] = useState('')
+
+  const { dispatch } = useTweetsContext()
 
   const inputRef = useRef()
+  const textareaRef = useRef()
 
   const router = useRouter()
   const { status, data } = useSession()
@@ -22,10 +36,15 @@ export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }
   const { mutate, isLoading, isError, isSuccess } = useMutation({
     mutationFn: createTweet,
     onSuccess: (res) => {
-      addTweet(res)
+      addTweet && addTweet(res)
+      dispatch({ type: 'addTweet', payload: res })
       setValue('')
       setImage(null)
       inputRef.current.value = null
+      toast(<ToastNotif id={res._id} />)
+    },
+    onError: () => {
+      toast.error('Error while creating tweet')
     }
   })
 
@@ -43,9 +62,9 @@ export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }
     })
   }, [mutate, image, user])
 
-  const handleFile = e => {
+  const handleFile = useCallback(e => {
     setImage(e.target.files[0])
-  }
+  }, [inputRef.current])
   const handleFileClear = e => {
     setImage(null)
     inputRef.current.value = null
@@ -68,5 +87,14 @@ export function useCreateTweet ({ iniciated, addTweet, setValue, isInTweetPage }
     }
   }, [focused.focused])
 
-  return { handleTweet, isLoading, isError, isSuccess, focused, setFocused, handleFile, handleFileClear, image, inputRef }
+  useLayoutEffect(() => {
+    textareaRef.current.style.height = 'inherit'
+
+    textareaRef.current.style.height = `${Math.max(
+      textareaRef.current.scrollHeight,
+      58
+    )}px`
+  }, [value, textareaRef.current])
+
+  return { handleTweet, value, setValue, isLoading, isError, isSuccess, focused, setFocused, handleFile, handleFileClear, image, inputRef, textareaRef }
 }

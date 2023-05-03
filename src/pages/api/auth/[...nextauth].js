@@ -57,9 +57,8 @@ export const options = {
       }
     },
     async session ({ session, user }) {
-      console.log('A PUNTO DE TRIGGEREAR LA BÚSQUEDA****************************: \n', user.id)
       const interactions = await UserInteractions.findOne({ _id: user.id })
-      session.user = { ...user, slug: interactions.slug }
+      session.user = { ...user, slug: interactions.slug, hasSlug: interactions.slugSetted }
       return session
     }
   },

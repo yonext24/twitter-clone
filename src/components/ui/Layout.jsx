@@ -5,19 +5,29 @@ import { useEffect } from 'react'
 import { useModal } from '@/hooks/useModal'
 import { CreateSlugModal } from './modals/CreateSlugModal'
 import { useSession } from 'next-auth/react'
+import { ToastContainer, cssTransition } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export function Layout ({ children }) {
   const { openModal, closeModal, open } = useModal()
-  const { status } = useSession()
+  // ^ Not sure but probably i should have used createPortal to do this instead
+  const { data } = useSession()
+  const user = data?.user
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      const hasSlug = localStorage.getItem('slugSetted')
-      if (hasSlug === null) {
+    if (user) {
+      const hasSlug = user.hasSlug
+      if (!hasSlug) {
         openModal()
       }
     }
-  }, [status])
+  }, [user])
+
+  const animation = cssTransition({
+    enter: 'appear',
+    exit: 'dissapear',
+    collapseDuration: 0
+  })
 
   return <div className={styles.div} style={{ position: 'relative' }}>
     {
@@ -28,5 +38,19 @@ export function Layout ({ children }) {
       {children}
     </main>
     <Aside />
+    <ToastContainer
+      position="bottom-center"
+      autoClose={3000}
+      limit={1}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      transition={animation}
+    />
   </div>
 }

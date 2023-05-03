@@ -20,9 +20,10 @@
 }
 .replyBar {
   background: var(--gray);
-  height: 100%;
+  flex: 1;
   width: 2px;
-  margin: 0 auto;
+  margin: 5px auto -15px;
+  z-index: 1;
 }
 .dataContainer {
   flex: 1;
@@ -61,11 +62,18 @@
   word-wrap: break-word;
   white-space: pre-line;
   max-width: 500px;
-  ;
+}
+.contentContainer p a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.contentContainer p a:hover {
+  text-decoration: underline
 }
 .imageContainer {
   width: 100%;
   margin: 10px 0;
+  cursor: pointer;
 }
 .imageContainer img {
   border-radius: 16px;

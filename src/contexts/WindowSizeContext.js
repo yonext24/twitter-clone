@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react'
 export const WindowSizeContext = createContext()
 
 export const WindowSizeContextProvider = ({ children }) => {
-  const [size, setSize] = useState(500)
+  const [size, setSize] = useState(1000)
 
   useEffect(() => {
     if (!window) return

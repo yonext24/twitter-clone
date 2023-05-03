@@ -59,3 +59,57 @@ button {
 button:active {
   outline: none;
 }
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dissapear {
+  from {
+    display: block;
+  }
+  to {
+    display: none;
+  }
+}
+.appear {
+  animation: appear .05s linear
+}
+.dissapear {
+  animation: dissapear .05s linear
+}
+.Toastify__toast-container {
+  width: max-content!important
+}
+.Toastify__toast-theme--light {
+  background-color: var(--blue)!important;
+  color: white!important;
+  min-height: unset!important;
+}
+.Toastify__toast-body {
+  padding: 2px 12px!important;
+  text-align: center;
+  font-size: 15px
+}
+.Toastify__close-button--light {
+  display: none;
+}
+.Toastify-view-anchor {
+  margin-left: 10px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+.Toastify-view-anchor:hover {
+  text-decoration: underline
+}
+.Toastify__toast--error {
+  background-color: red!important
+}
+.Toastify__toast-icon {
+  display: none!important;
+}

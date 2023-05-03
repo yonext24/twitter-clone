@@ -5,7 +5,7 @@ import { PinIcon } from '@/components/icons/tweet/Pin'
 import { useEffect, useState } from 'react'
 
 /* eslint-disable react/no-unknown-property */
-export function TweetOptionsModal ({ username, isOwn, setModalName }) {
+export function TweetOptionsModal ({ username, isOwn, openModal }) {
   const [inicializated, setInicializated] = useState(false)
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function TweetOptionsModal ({ username, isOwn, setModalName }) {
         {
           isOwn
             ? <>
-                <button style={{ color: 'rgb(244, 33, 46)' }} onClick={() => setModalName('delete')}>
+                <button style={{ color: 'rgb(244, 33, 46)' }} onClick={() => openModal('delete')}>
                   <DeleteIcon width='1.25rem' height='1.25rem' />
                   <span>Delete Tweet</span>
                 </button>

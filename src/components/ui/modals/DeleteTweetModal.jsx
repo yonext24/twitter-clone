@@ -1,23 +1,22 @@
 /* eslint-disable react/no-unknown-property */
 import { deleteTweet } from '@/assets/consts'
-import { useEffect } from 'react'
+import { useModalLogic } from '@/hooks/useModalLogic'
+import { useTweetsContext } from '@/hooks/useTweetsContext'
+import { toast } from 'react-toastify'
 
-export function DeleteTweetModal ({ closeModal, setDeleted, id }) {
-  useEffect(() => {
-    document.querySelector('html').style.overflow = 'hidden'
-    document.querySelector('html').style.paddingRight = '17px'
+export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
+  console.log(id)
 
-    return () => {
-      document.querySelector('html').style.overflow = 'auto'
-      document.querySelector('html').style.paddingRight = '0'
-    }
-  }, [])
+  useModalLogic({ closeModal })
+  const { dispatch } = useTweetsContext()
 
   const handleClick = async () => {
     deleteTweet(id)
       .then(res => {
         if (res.ok) {
-          setDeleted(true)
+          dispatch({ type: 'deleteTweet', payload: id })
+          deleteTweetFromPage && deleteTweetFromPage(id)
+          toast('Your tweet was deleted')
         }
       })
   }

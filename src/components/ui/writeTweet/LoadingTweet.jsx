@@ -10,7 +10,7 @@ export function LoadingTweet ({ isLoading, isSuccess, isError }) {
   useEffect(() => {
     if (isLoading) {
       setShowing(true)
-      setPercentage(Math.ceil(Math.random() * 20))
+      setPercentage(Math.ceil(Math.random() * 12))
     }
   }, [isLoading])
 

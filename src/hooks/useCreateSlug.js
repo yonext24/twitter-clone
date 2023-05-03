@@ -22,8 +22,6 @@ export function useCreateSlug (closeModal) {
     return () => {
       document.querySelector('html').style.overflow = 'auto'
       document.querySelector('html').style.paddingRight = '0'
-
-      localStorage.setItem('slugSetted', true)
     }
   }, [])
 

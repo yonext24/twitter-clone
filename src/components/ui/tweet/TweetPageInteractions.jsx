@@ -7,8 +7,7 @@ export function TweetPageInteractions ({ setTweet, openReply, likes, comments, r
   const handleAddLike = (isLiked) => {
     setTweet(prev => {
       const newLikes = isLiked ? prev.likes - 1 : prev.likes + 1
-
-      return { ...prev, likes: newLikes }
+      return { ...prev, likes: newLikes, isLiked: !isLiked }
     })
   }
   return <>
@@ -30,6 +29,7 @@ export function TweetPageInteractions ({ setTweet, openReply, likes, comments, r
         padding: 10px 0;
         border-top: 1px solid var(--borderColor);
         border-bottom: 1px solid var(--borderColor);
+        background-color: var(--background)
       }
 
     `}</style>

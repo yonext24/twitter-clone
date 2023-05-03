@@ -1,27 +1,11 @@
 import { CloseIcon } from '@/components/icons/writeTweet/Close'
-import { useContext, useEffect } from 'react'
 import { Tweet } from '../tweet/Tweet'
 import { WriteTweetMain } from '../writeTweet/WriteTweetMain'
-import { WriteTweetModalContext } from '@/contexts/WriteTweetModalContext'
+import { useModalLogic } from '@/hooks/useModalLogic'
 
 /* eslint-disable react/no-unknown-property */
-export function TweetModal ({ addTweet }) {
-  useEffect(() => {
-    document.querySelector('html').style.overflow = 'hidden'
-    document.querySelector('html').style.paddingRight = '17px'
-
-    return () => {
-      document.querySelector('html').style.overflow = 'auto'
-      document.querySelector('html').style.paddingRight = '0'
-    }
-  }, [])
-
-  const { state, dispatch } = useContext(WriteTweetModalContext)
-  const { reply } = state
-
-  const closeModal = () => {
-    dispatch({ type: 'closeModal' })
-  }
+export function TweetModal ({ addTweet, closeModal, reply }) {
+  useModalLogic({ closeModal })
 
   return <>
 
@@ -33,7 +17,7 @@ export function TweetModal ({ addTweet }) {
       {
         reply.isReply && <Tweet tweet={reply.reply} isInReply={true} replyingTo={reply.reply.author.slug} />
       }
-      <WriteTweetMain iniciated={true} reply={reply} addTweet={addTweet} />
+      <WriteTweetMain iniciated={true} addTweet={addTweet} reply={reply} />
     </div>
   </div>
 

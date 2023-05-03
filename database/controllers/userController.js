@@ -22,7 +22,7 @@ export const handleSlugChange = async (req, res) => {
   if (exists) return res.status(406).json({ error: 'Username already exists.' })
 
   try {
-    await UserInteractions.updateOne({ _id: session.user.id }, { slug: req.body })
+    await UserInteractions.updateOne({ _id: session.user.id }, { slug: req.body, slugSetted: true })
   } catch (err) {
     return res.status(500).json({ error: 'Error while changing slug.' })
   }

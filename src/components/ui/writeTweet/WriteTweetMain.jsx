@@ -1,6 +1,5 @@
 import { DownArrowIcon } from '@/components/icons/writeTweet/DownArrow'
 import { WorldIcon } from '@/components/icons/writeTweet/World'
-import { useState } from 'react'
 import { WriteTweetFooter } from './WriteTweetFooter'
 import styles from './writetweetmain.module.css'
 import { useCreateTweet } from '@/hooks/useCreateTweet'
@@ -9,13 +8,25 @@ import { useSession } from 'next-auth/react'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
 import { DeleteImageIcon } from '@/components/icons/tweet/DeleteImage'
 
-export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetPage = false, replyingTo }) {
-  const [value, setValue] = useState('')
-
+export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = false, replyingTo, noPadding, noIcons, addTweet }) {
   const { data, status } = useSession()
   const user = data?.user
 
-  const { handleTweet, isLoading, isSuccess, focused, setFocused, isError, handleFile, handleFileClear, image, inputRef } = useCreateTweet({ value, iniciated, isInTweetPage, addTweet, reply, setValue })
+  const {
+    handleTweet,
+    handleFile,
+    handleFileClear,
+    setValue,
+    setFocused,
+    value,
+    textareaRef,
+    isLoading,
+    isError,
+    isSuccess,
+    inputRef,
+    focused,
+    image
+  } = useCreateTweet({ iniciated, isInTweetPage, reply, addTweet })
 
   return <div className={styles.container}>
     <LoadingTweet isLoading={isLoading} isSuccess={isSuccess} isError={isError} />
@@ -36,12 +47,13 @@ export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetP
       </button>)
       }
       <textarea
+        ref={textareaRef}
         spellCheck={false}
-        placeholder="What's happening?"
+        placeholder={reply?.isReply ? 'Tweet your reply' : "What's happening?"}
         value={value}
         onChange={e => setValue(e.target.value)}
         onFocus={() => setFocused(prev => ({ ...prev, focused: true }))}
-        style={{ marginTop: focused && iniciated ? 23 : 10, height: iniciated ? '120px' : 'unset', flex: isInTweetPage && !focused.footer && 1 }}
+        style={{ marginTop: focused && iniciated ? 23 : 10, minHeight: iniciated ? '120px' : 'unset', flex: isInTweetPage && !focused.footer ? 1 : 'unset' }}
       />
       {
         image && <div className={styles.imageContainer}>
@@ -66,7 +78,7 @@ export function WriteTweetMain ({ iniciated = false, addTweet, reply, isInTweetP
         }
       </>
       }
-      <WriteTweetFooter handleClick={() => { handleTweet(value, reply) }} disabled={value.trim().length === 0 && !image} inputRef={inputRef} handleFile={handleFile} isLoading={isLoading} isInTweetPage={isInTweetPage} focused={focused} />
+      <WriteTweetFooter noPadding={noPadding} noIcons={noIcons} handleClick={() => { handleTweet(value, reply) }} disabled={value.trim().length === 0 && !image} inputRef={inputRef} handleFile={handleFile} isLoading={isLoading} isInTweetPage={isInTweetPage} focused={focused} />
     </div>
   </div>
 }

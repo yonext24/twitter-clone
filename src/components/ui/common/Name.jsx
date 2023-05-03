@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unknown-property */
-export function Name ({ children }) {
+export function Name ({ children, isStretch }) {
   return <>
 
-    <h5>{children}</h5>
+    <h5 style={{ ...(isStretch && { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }) }}>{children}</h5>
 
     <style jsx>{`
     

@@ -3,6 +3,7 @@ const { Schema } = mongoose
 
 const UserInteractionsSchema = mongoose.Schema({
   _id: String,
+  slugSetted: { type: Boolean, default: false },
   username: {
     type: String,
     required: true,
@@ -20,9 +21,18 @@ const UserInteractionsSchema = mongoose.Schema({
     type: String,
     default: 'user'
   },
-  tweets: [{ type: Schema.Types.ObjectId, ref: 'Tweet' }],
-  likedTweets: [{ type: Schema.Types.ObjectId, ref: 'Tweet' }],
-  retweetedTweets: [{ type: Schema.Types.ObjectId, ref: 'Tweet' }]
+  tweets: [{
+    tweet: { type: Schema.Types.ObjectId, ref: 'Tweet' },
+    tweetedAt: { type: Date, default: Date.now }
+  }],
+  likedTweets: [{
+    tweet: { type: Schema.Types.ObjectId, ref: 'Tweet' },
+    likedAt: { type: Date, default: Date.now }
+  }],
+  retweetedTweets: [{
+    tweet: { type: Schema.Types.ObjectId, ref: 'Tweet' },
+    retweetedAt: { type: Date, default: Date.now }
+  }]
 })
 
 const UserInteractions = mongoose.models.UserInteractions || mongoose.model('UserInteractions', UserInteractionsSchema)

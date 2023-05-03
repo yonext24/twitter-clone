@@ -13,24 +13,33 @@ import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import { ModalBackground } from '../ModalBackground'
 import { ProfileModal } from '../modals/ProfileModal'
-import { WriteTweetModalContext } from '@/contexts/WriteTweetModalContext'
 import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
 import { GithubIcon } from '@/components/icons/navbar/Github'
 import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 import Link from 'next/link'
 import styles from './navbar.module.css'
+import { ReactPortal } from '../ReactPortal'
+import { TweetModal } from '../modals/TweetModal'
 
 export function Navbar () {
-  const { open, closeModal, openModal } = useModal()
-  const { dispatch } = useContext(WriteTweetModalContext)
+  const { open, closeModal, openModal, modalName } = useModal()
+
   const { data, status } = useSession()
   const user = data?.user
 
   const { size } = useContext(WindowSizeContext)
 
   return <nav className={styles.navbar} style={{ minWidth: size >= 1000 && 80 }}>
+
+      {
+        open && modalName === 'writeTweet' &&
+        <ReactPortal wrapperId='writetweet-modal'>
+          <TweetModal closeModal={closeModal} reply={{ isReply: false }} />
+        </ReactPortal>
+      }
+
     {
-      open && <ModalBackground closeModal={closeModal} />
+      open && modalName === 'options' && <ModalBackground closeModal={closeModal} />
     }
     <div style={{ zIndex: open ? 1000 : 0 }}>
       <ul className={styles.ul}>
@@ -70,7 +79,7 @@ export function Navbar () {
           <Link href='https://github.com/yonext24/twitter-clone' target='_blank' rel='noreferrer' className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name}>Github</h4>
-              <GithubIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={false} />
+              <GithubIcon color='var(--mainColor)' width='26.25px' height='26.25px' />
             </li>
           </Link>
           <div className={styles.liContainer}>
@@ -85,16 +94,16 @@ export function Navbar () {
               <MoreIcon color='var(--mainColor)' width='26.25px' height='26.25px' />
             </li>
           </div>
-          <button className={styles.tweetButton} onClick={() => { dispatch({ type: 'openModal' }) }}>
+          <button className={styles.tweetButton} onClick={() => openModal('writeTweet')}>
             <WriteIcon color='white' width='24px' height='24px' />
             <span>Tweet</span>
           </button>
       </ul>
       <div style={{ position: 'relative', margin: '-6px' }}>
         {
-          open && <ProfileModal slug={user?.slug} />
+          open && modalName === 'options' && <ProfileModal slug={user?.slug} />
         }
-      <button className={styles.profile} onClick={() => open ? closeModal() : openModal()}>
+      <button className={styles.profile} onClick={() => open ? closeModal() : openModal('options')}>
         {
           status === 'loading' || status === 'authenticated'
             ? <ImageWithPlaceholder image={data?.user?.image} height={40} width={40} alt='Your profile image' />

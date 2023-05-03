@@ -1,41 +1,31 @@
 {
-  "_id": "64384541b06afa95c34e898f",
-  "content": "Im the admin!!!!!!!!1",
+  "image": {
+      "hasImage": true,
+      "src": "https://firebasestorage.googleapis.com/v0/b/twitter-clone-6598b.appspot.com/o/images%2F64233b6a03019a770ae74dd5%2F1682708106800.png?alt=media&token=dac0b2b2-5b09-45c5-a907-2d6b0c8a8bf5",
+      "id": "1682708106800.png",
+      "width": 1366,
+      "height": 624,
+      "aspectRatio": 2.1891025641025643
+  },
+  "_id": "644c168cfd0a99380911b0f4",
+  "content": "I made this website using Next.js and React Query in the frontend, and MongoDB and Firebase (for image storage) in the backend. Additionally, I used NextAuth for the authentication system.\n\nYou can find this project's GitHub repository by clicking on the navbar icon or by visiting this link:\n\nhttps://github.com/yonext24/twitter-clone\n\nAlso, you can check out my portfolio at:\nhttps://yonathan-portfolio.netlify.app/",
   "author": {
       "_id": "64233b6a03019a770ae74dd5",
       "username": "Yonathan Picone",
       "slug": "Administrator",
-      "image": "https://lh3.googleusercontent.com/a/AGNmyxaWFTmNKXnYY1e3fr6R1-Lab6u3nOaFesBmwpdn=s96-c",
-      "role": "user",
-      "tweets": [
-          "64384541b06afa95c34e898f",
-          "6438454db06afa95c34e8994"
-      ],
-      "likedTweets": [],
-      "retweetedTweets": [],
-      "__v": 0
+      "image": "https://lh3.googleusercontent.com/a/AGNmyxaWFTmNKXnYY1e3fr6R1-Lab6u3nOaFesBmwpdn=s96-c"
   },
   "isReplying": false,
   "replies": [
-      {
-          "_id": "6438454db06afa95c34e8994",
-          "content": ":)",
-          "author": "64233b6a03019a770ae74dd5",
-          "isReplying": true,
-          "replyingTo": "64384541b06afa95c34e898f",
-          "replyingUser": "64233b6a03019a770ae74dd5",
-          "replies": [],
-          "likes": 0,
-          "usersWhoLiked": [],
-          "createdAt": "2023-04-13T18:09:17.780Z",
-          "updatedAt": "2023-04-13T18:09:17.780Z",
-          "__v": 0,
-          "isLiked": false
-      }
+      "644caae7d3f0b49a23bd8c9e"
   ],
-  "likes": 0,
-  "usersWhoLiked": [],
-  "createdAt": "2023-04-13T18:09:05.264Z",
-  "updatedAt": "2023-04-13T18:09:17.458Z",
-  "__v": 0
+  "likes": 1,
+  "usersWhoLiked": [
+      "64233b6a03019a770ae74dd5"
+  ],
+  "createdAt": "2023-04-28T18:55:08.850Z",
+  "updatedAt": "2023-04-30T14:44:45.044Z",
+  "__v": 0,
+  "isLiked": true,
+  "currentReplie": "644caae7d3f0b49a23bd8c9e"
 }

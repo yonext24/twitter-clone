@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function useIntersectionObserver () {
+export function useIntersectionObserver ({ hasMore }) {
   const [intersecting, setIntersecting] = useState(false)
 
   const intersectionRef = useRef()
 
   useEffect(() => {
     if (!intersectionRef.current) return
+    if (!hasMore) return
 
     const element = intersectionRef.current
 
@@ -21,7 +22,7 @@ export function useIntersectionObserver () {
     observer.observe(element)
 
     return () => observer && observer.disconnect()
-  }, [intersectionRef])
+  }, [intersectionRef, hasMore])
 
   return { intersecting, intersectionRef }
 }

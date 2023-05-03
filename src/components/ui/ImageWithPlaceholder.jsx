@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
-export function ImageWithPlaceholder ({ image, height, width, alt, styles, animation = 'left' }) {
+export function ImageWithPlaceholder ({ image, height, width, alt, styles, animation = 'left', loading = 'lazy' }) {
   const [loaded, setLoaded] = useState(false)
 
   return <>
@@ -12,6 +12,7 @@ export function ImageWithPlaceholder ({ image, height, width, alt, styles, anima
           ? (
             <>
                 <Image
+                  loading={loading}
                   onLoadingComplete={() => setLoaded(true)}
                   src={image}
                   height={height}

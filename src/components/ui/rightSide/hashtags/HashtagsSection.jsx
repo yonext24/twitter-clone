@@ -62,7 +62,7 @@ export function HashtagsSection () {
         : <>
             <p className={styles.title}>What&lsquo;s happening</p>
             {
-              hashtags.map(({ id, ...el }) => <Hashtag key={el.id} {...el} />)
+              hashtags.map(({ id, ...el }) => <Hashtag key={id} {...el} />)
             }
             <ShowMore />
       </>

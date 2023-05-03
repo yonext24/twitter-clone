@@ -39,7 +39,7 @@ export const getSingleTweet = async (req, res) => {
 
   if (session) {
     const user = await UserInteractions.findOne({ _id: session.user.id })
-    const isMainTweetLiked = user.likedTweets.includes(tweet._id)
+    const isMainTweetLiked = user.likedTweets.some(el => el.tweet.equals(tweet._id))
 
     const parsedReplies = tweet.replies.map(document => {
       const match = user.likedTweets.includes(document._id)
@@ -96,7 +96,7 @@ export const createTweet = async (req, res) => {
       }
     }
     try {
-      await UserInteractions.updateOne({ _id: session.user.id }, { $push: { tweets: tweet._id } })
+      await UserInteractions.updateOne({ _id: session.user.id }, { $push: { tweets: { tweet: tweet._id } } })
     } catch {
       throw new Error('Error al actualizar la lista de tweets del usuario')
     }
@@ -121,7 +121,7 @@ export const getTimelineTweets = async (req, res) => {
   try {
     await dbConnect()
 
-    const porPagina = 6
+    const porPagina = 5
     const pagina = req.query.page
     const saltar = (pagina - 1) * porPagina
 
@@ -140,14 +140,35 @@ export const getTimelineTweets = async (req, res) => {
     if (session) {
       const user = await UserInteractions.findOne({ _id: session.user.id })
 
-      console.log(session.user.id)
-      const parsedDocuments = myDocuments.map(document => {
-        const match = user.likedTweets.includes(document._id)
+      const parsedDocuments = myDocuments
+        .map(document => {
+          const match = user.likedTweets.some(el => el.tweet.equals(document._id))
 
-        return { ...document._doc, isLiked: match }
+          return { ...document._doc, isLiked: match }
+        })
+        .map((el, _, array) => {
+          if (!el.isReplying) return el
+          else {
+            const index = array.findIndex(e => e._id.equals(el.replyingTo))
+            if (index < 0) return el
+            if (array[index].currentReplie) return el
+            array[index].currentReplie = el._id
+            return { ...el, isCurrentlyReplying: array[index]._id }
+          }
+        })
+      const correctlySorted = []
+      parsedDocuments.forEach(el => {
+        if (correctlySorted.some(document => el._id.equals(document._id))) return
+
+        if (!el.currentReplie && !el.isCurrentlyReplying) correctlySorted.push(el)
+        if (el.currentReplie) {
+          const index = parsedDocuments.findIndex(({ _id }) => _id.equals(el.currentReplie))
+          correctlySorted.push(el)
+          index >= 0 && correctlySorted.push(parsedDocuments[index])
+        }
       })
 
-      return res.status(200).json({ tweets: parsedDocuments, hasMore })
+      return res.status(200).json({ tweets: correctlySorted, hasMore })
     }
 
     return res.status(200).json({ tweets: myDocuments, hasMore })
@@ -173,8 +194,12 @@ export const likeTweet = async (req, res) => {
       ? { $inc: { likes: -1 }, $pull: { usersWhoLiked: session.user.id } }
       : { $inc: { likes: 1 }, $push: { usersWhoLiked: session.user.id } }
 
+    const updateUser = userHasLiked
+      ? { $pull: { likedTweets: { tweet: tweetId } } }
+      : { $push: { likedTweets: { tweet: tweetId } } }
+
     const updatedTweet = await Tweet.findOneAndUpdate({ _id: tweetId }, update, { new: true })
-    await UserInteractions.updateOne({ _id: session.user.id }, userHasLiked ? { $pull: { likedTweets: tweetId } } : { $push: { likedTweets: tweetId } })
+    await UserInteractions.updateOne({ _id: session.user.id }, updateUser)
 
     await updatedTweet.save()
 
@@ -198,7 +223,7 @@ export const deleteTweet = async (req, res) => {
     await deleteImage(session.user.id, tweet.image.id)
   }
 
-  await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: tweetId } })
+  await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: { tweet: tweetId } } })
   await Tweet.deleteOne({ _id: tweet._id })
   if (tweet.isReplying) {
     await Tweet.updateOne({ _id: tweet.replyingTo }, { $pull: { replies: tweetId } })

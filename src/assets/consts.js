@@ -33,12 +33,14 @@ export async function createTweet (data) {
     if (data.imageToUploadData?.hasImage) {
       uploadImages(data.imageToUploadData.userId, data.imageToUploadData.image)
         .then(image => {
-          console.log(image)
           fetch('/api/tweet', {
             method: 'POST',
             body: JSON.stringify({ data: { ...data.data, image } })
           })
-            .then(res => res.json())
+            .then(res => {
+              if (!res.ok) throw new Error('Error while creating tweet')
+              return res.json()
+            })
             .then(json => {
               if (!json.error) resolve(json)
               else {
@@ -52,13 +54,17 @@ export async function createTweet (data) {
         method: 'POST',
         body: JSON.stringify({ data: data.data })
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error('Error while creating tweet')
+          return res.json()
+        })
         .then(json => {
           if (!json.error) resolve(json)
           else {
             reject(json.error)
           }
         })
+        .catch(reject)
     }
   })
 }
