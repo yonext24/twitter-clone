@@ -20,12 +20,16 @@ import Link from 'next/link'
 import styles from './navbar.module.css'
 import { ReactPortal } from '../ReactPortal'
 import { TweetModal } from '../modals/TweetModal'
+import { useRouter } from 'next/router'
 
 export function Navbar () {
   const { open, closeModal, openModal, modalName } = useModal()
 
   const { data, status } = useSession()
   const user = data?.user
+  const router = useRouter()
+
+  console.log(router.route)
 
   const { size } = useContext(WindowSizeContext)
 
@@ -49,7 +53,7 @@ export function Navbar () {
           <Link href='/home' className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name} style={{ fontWeight: 'bold' }} >Home</h4>
-              <HomeIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={true} />
+              <HomeIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={router.route === '/home'} />
             </li>
           </Link>
           <div className={styles.liContainer}>
@@ -73,7 +77,7 @@ export function Navbar () {
           <div className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name}>Bookmarks</h4>
-              <SavedIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={false} />
+              <SavedIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={router.route === '/bookmarked'} />
             </li>
           </div>
           <Link href='https://github.com/yonext24/twitter-clone' target='_blank' rel='noreferrer' className={styles.liContainer}>

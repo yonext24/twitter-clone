@@ -1,8 +1,9 @@
 import { changeSlug } from '@/assets/consts'
 import debounce from 'just-debounce-it'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useMutation } from 'react-query'
+import { useModalLogic } from './useModalLogic'
 
 export function useCreateSlug (closeModal) {
   const [value, setValue] = useState('')
@@ -15,15 +16,7 @@ export function useCreateSlug (closeModal) {
   const { data } = useSession()
   const user = data?.user
 
-  useEffect(() => {
-    document.querySelector('html').style.overflow = 'hidden'
-    document.querySelector('html').style.paddingRight = '17px'
-
-    return () => {
-      document.querySelector('html').style.overflow = 'auto'
-      document.querySelector('html').style.paddingRight = '0'
-    }
-  }, [])
+  useModalLogic({ closeModal })
 
   const { mutate, isLoading, isError, isSuccess } = useMutation({
     mutationFn: changeSlug,
