@@ -32,6 +32,10 @@ const UserInteractionsSchema = mongoose.Schema({
   retweetedTweets: [{
     tweet: { type: Schema.Types.ObjectId, ref: 'Tweet' },
     retweetedAt: { type: Date, default: Date.now }
+  }],
+  bookmarks: [{
+    tweet: { type: Schema.Types.ObjectId, ref: 'Tweet' },
+    bookmarkedAt: { type: Date, default: Date.now }
   }]
 })
 

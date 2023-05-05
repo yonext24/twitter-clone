@@ -86,6 +86,13 @@ export function retweetTweet (id) {
   // Código para retweetear un tweet
 }
 
+export function bookmarkTweet (id) {
+  return fetch('/api/tweet', {
+    method: 'PATCH',
+    body: id
+  })
+}
+
 export function deleteTweet (id) {
   return fetch('/api/tweet', {
     method: 'DELETE',

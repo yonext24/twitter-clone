@@ -41,6 +41,10 @@ const TweetSchema = new mongoose.Schema({
       ref: 'UserInteractions'
     }
   ],
+  bookmarks: {
+    type: Number,
+    default: 0
+  },
   image: {
     hasImage: {
       type: Boolean,

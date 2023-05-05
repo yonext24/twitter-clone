@@ -18,7 +18,7 @@ import { OpenImage } from '../modals/OpenImage'
 
 export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false, withoutImage, isStretch = false, openImageAddTweet, deleteTweet, noOpenImage }) {
   const { image: userImage, username, slug } = tweet.author
-  const { content, createdAt, replies, likes, _id, isLiked, image, currentReplie } = tweet
+  const { content, createdAt, replies, likes, _id, isLiked, isBookmarked, image, currentReplie } = tweet
   const formattedDate = formatDate(createdAt, isInPage)
   const { data } = useSession()
   const user = data?.user
@@ -44,7 +44,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
       </ReactPortal>
       <ReactPortal wrapperId='writetweet-modal'>
       {
-      open && modalName === 'writeTweet' && <TweetModal closeModal={closeModal} reply={{ isReply: true, reply: tweet }} />
+        open && modalName === 'writeTweet' && <TweetModal closeModal={closeModal} reply={{ isReply: true, reply: tweet }} />
       }
       </ReactPortal>
       <ReactPortal wrapperId='deleteTweet-modal'>
@@ -120,7 +120,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
           </div>
         }
         {
-          (!isInReply && !isInPage) && <Interactions id={_id} comments={replies.length} likes={likes} retweets={0} isLiked={isLiked} openReply={openReply} isStretch={isStretch} />
+          (!isInReply && !isInPage) && <Interactions id={_id} comments={replies.length} likes={likes} retweets={0} isLiked={isLiked} openReply={openReply} isStretch={isStretch} isBookmarked={isBookmarked} />
         }
         {
           isInReply && <p style={{ color: 'var(--slugColor)', marginTop: '1rem' }}>Replying to

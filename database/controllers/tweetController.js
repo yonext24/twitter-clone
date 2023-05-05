@@ -5,6 +5,7 @@ import Tweet from '../models/Tweet'
 import UserInteractions from '../models/UserInteractions'
 import { isValidObjectId } from 'mongoose'
 import { deleteImage } from '@firebase/utils'
+import { ObjectId } from 'mongodb'
 
 export const getSingleTweet = async (req, res) => {
   const id = req.query.id
@@ -40,15 +41,17 @@ export const getSingleTweet = async (req, res) => {
   if (session) {
     const user = await UserInteractions.findOne({ _id: session.user.id })
     const isMainTweetLiked = user.likedTweets.some(el => el.tweet.equals(tweet._id))
+    const isMainTweetBookmarked = user.bookmarks.some(el => el.tweet.equals(tweet._id))
 
     const parsedReplies = tweet.replies.map(document => {
-      const match = user.likedTweets.includes(document._id)
+      const likeMatch = user.likedTweets.includes(document._id)
+      const bookmarkMatch = user.bookmarks.some(el => el.tweet.equals(document._id))
 
-      return { ...document._doc, isLiked: match }
+      return { ...document._doc, isLiked: likeMatch, isBookmarked: bookmarkMatch }
     })
     tweet._doc.replies = parsedReplies
 
-    return res.status(200).json({ ...tweet._doc, isLiked: isMainTweetLiked })
+    return res.status(200).json({ ...tweet._doc, isLiked: isMainTweetLiked, isBookmarked: isMainTweetBookmarked })
   }
 
   return res.status(200).json(tweet)
@@ -142,9 +145,10 @@ export const getTimelineTweets = async (req, res) => {
 
       const parsedDocuments = myDocuments
         .map(document => {
-          const match = user.likedTweets.some(el => el.tweet.equals(document._id))
+          const likeMatch = user.likedTweets.some(el => el.tweet.equals(document._id))
+          const bookmarkMatch = user.bookmarks.some(el => el.tweet.equals(document._id))
 
-          return { ...document._doc, isLiked: match }
+          return { ...document._doc, isLiked: likeMatch, isBookmarked: bookmarkMatch }
         })
         .map((el, _, array) => {
           if (!el.isReplying) return el
@@ -230,4 +234,32 @@ export const deleteTweet = async (req, res) => {
   }
 
   return res.status(200).json({ success: 'Tweet Deleted' })
+}
+export const bookmarkTweet = async (req, res) => {
+  if (!req.body) return res.status(400).json({ error: 'Id is needed ' })
+  const tweetId = new ObjectId(req.body)
+
+  const session = await getServerSession(req, res, options)
+  if (!session) return res.status(401).json({ error: 'You are not logged!' })
+
+  try {
+    const userHasBookmarked = await UserInteractions.exists({
+      _id: session.user.id,
+      bookmarks: { $elemMatch: { tweet: tweetId } }
+    })
+
+    const updateUser = userHasBookmarked
+      ? { $pull: { bookmarks: { tweet: tweetId } } }
+      : { $push: { bookmarks: { tweet: tweetId } } }
+    const updateTweet = userHasBookmarked
+      ? { $inc: { bookmarks: -1 } }
+      : { $inc: { bookmarks: 1 } }
+
+    await UserInteractions.updateOne({ _id: session.user.id }, updateUser)
+    await Tweet.updateOne({ _id: tweetId }, updateTweet)
+    return res.status(200).json({ success: !userHasBookmarked ? 'Tweet added to your Bookmarks' : 'Tweet removed from your Bookmarks' })
+  } catch (_) {
+    console.log(_)
+    return res.status(500).json({ error: 'Error while creating bookmark' })
+  }
 }

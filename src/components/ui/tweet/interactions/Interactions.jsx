@@ -1,15 +1,20 @@
 /* eslint-disable react/no-unknown-property */
 
+import { BookmarkEntry } from './entrys/BookmarkEntry'
 import { CommentEntry } from './entrys/CommentEntry'
 import { LikeEntry } from './entrys/LikeEntry'
 import { RetweetEntry } from './entrys/RetweetEntry'
 
-export function Interactions ({ likes, comments, retweets, id, isLiked, openReply, isStretch }) {
+export function Interactions ({ likes, comments, retweets, bookmarks, id, isLiked, isBookmarked, openReply, isStretch }) {
   return <>
     <div onClick={e => e.stopPropagation()}>
       <LikeEntry id={id} likes={likes} isLiked={isLiked} />
       <CommentEntry id={id} comments={comments} openReply={openReply} />
       <RetweetEntry id={id} retweets={retweets} />
+      {
+        !isStretch &&
+          <BookmarkEntry id={id} bookmarks={bookmarks} isBookmarked={isBookmarked} />
+      }
     </div>
 
     <style jsx>{`
@@ -17,7 +22,7 @@ export function Interactions ({ likes, comments, retweets, id, isLiked, openRepl
         display: flex;
         column-gap: 8px;
         margin: 12px 0 0;
-        width: ${isStretch ? '80%' : '50%'};
+        width: ${isStretch ? '100%' : '100%'};
         justify-content: space-between;
       }
     `}</style>

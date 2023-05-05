@@ -34,6 +34,17 @@ export const TweetsReducer = (state, action) => {
           return el
         })
       }
+    case 'addBookmark':
+      return {
+        ...state,
+        tweets: state.tweets.map(el => {
+          if (el._id === action.payload) {
+            const isBookmarked = el.isBookmarked
+            return { ...el, isBookmarked: !isBookmarked, bookmarks: isBookmarked ? el.bookmarks - 1 : el.bookmarks + 1 }
+          }
+          return el
+        })
+      }
     case 'deleteTweet':
       const id = action.payload
       let newTweets = [...state.tweets]

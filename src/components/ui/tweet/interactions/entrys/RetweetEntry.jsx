@@ -9,7 +9,7 @@ export function RetweetEntry ({ retweets, isInPage = false, width = '1.25rem' })
         <RetweetIcon retweets={retweets} width={width} />
       </div>
       {
-        isInPage && <span>{retweets || ''}</span>
+        !isInPage && <span>{retweets || ''}</span>
       }
     </button>
 

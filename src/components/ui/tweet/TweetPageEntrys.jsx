@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-export function TweetPageEntrys ({ replies, likes }) {
+export function TweetPageEntrys ({ replies, likes, bookmarks }) {
   if (likes < 1 && replies.length < 1) return null
   return <>
 
@@ -15,6 +15,12 @@ export function TweetPageEntrys ({ replies, likes }) {
         <span>{replies.length}</span>
         <p>{replies.length === 1 ? 'Reply' : 'Replies'}</p>
       </div>
+    }
+    {
+      bookmarks && <div className='entryContainer'>
+      <span>{bookmarks}</span>
+      <p>{bookmarks === 1 ? 'Bookmark' : 'Bookmarks'}</p>
+    </div>
     }
 
   </section>

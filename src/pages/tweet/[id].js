@@ -50,6 +50,8 @@ export default function TweetPage () {
     }
   }, [data])
 
+  console.log(tweet)
+
   return <>
       <SEO title={tweet
         ? `${tweet.author.username} on Twitter: "${tweet.content}"`
