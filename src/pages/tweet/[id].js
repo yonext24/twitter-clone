@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unknown-property */
 import { getSingleTweet } from '@/assets/consts'
-import { Layout } from '@/components/ui/Layout'
-import { ReactPortal } from '@/components/ui/ReactPortal'
-import { SEO } from '@/components/ui/SEO'
+import { Layout } from '@/components/ui/common/Layout'
+import { ReactPortal } from '@/components/ui/common/ReactPortal'
+import { SEO } from '@/components/ui/common/SEO'
 import { TweetModal } from '@/components/ui/modals/TweetModal'
 import { Spinner } from '@/components/ui/spinner/Spinner'
 import { Tweet } from '@/components/ui/tweet/Tweet'
@@ -49,8 +49,6 @@ export default function TweetPage () {
       setTweet(data)
     }
   }, [data])
-
-  console.log(tweet)
 
   return <>
       <SEO title={tweet

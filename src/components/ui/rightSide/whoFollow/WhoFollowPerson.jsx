@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { ImageWithPlaceholder } from '../../ImageWithPlaceholder'
+import { ImageWithPlaceholder } from '../../common/ImageWithPlaceholder'
 import { Name } from '../../common/Name'
 import { Slug } from '../../common/Slug'
 

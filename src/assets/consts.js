@@ -27,6 +27,10 @@ export function getTimeline (page) {
   return fetch('/api/timeline?page=' + page)
     .then(res => res.json())
 }
+export function getUserBookmarks (page) {
+  return fetch('api/user?page=' + page)
+    .then(res => res.json())
+}
 
 export async function createTweet (data) {
   return new Promise((resolve, reject) => {

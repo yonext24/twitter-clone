@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
-import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
-import { ModalBackground } from '../ModalBackground'
-import { ReactPortal } from '../ReactPortal'
+import { ImageWithPlaceholder } from '../common/ImageWithPlaceholder'
+import { ModalBackground } from '../common/ModalBackground'
+import { ReactPortal } from '../common/ReactPortal'
 import { Spinner } from '../spinner/Spinner'
 import { Tweet } from '../tweet/Tweet'
 import { TweetPageEntrys } from '../tweet/TweetPageEntrys'

@@ -1,12 +1,9 @@
-import { getTimeline } from '@/assets/consts'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useQuery } from 'react-query'
 import { useIntersectionObserver } from './useIntersectionObserver'
-import { useTweetsContext } from './useTweetsContext'
 
-export function useGetTweets () {
-  const [sectionSelected, setSectionSelected] = useState('foryou')
-  const { tweets, page, hasMore, dispatch } = useTweetsContext()
+export function useGetTweets ({ state, dispatch, func }) {
+  const { tweets, hasMore, page } = state
 
   const firstFetched = useRef(false)
 
@@ -21,7 +18,7 @@ export function useGetTweets () {
         })
       }
       firstFetched.current = true
-      return getTimeline(page.number)
+      return func(page.number)
     },
     {
       retryDelay: 5000,
@@ -29,7 +26,6 @@ export function useGetTweets () {
       refetchInterval: false,
       onSuccess: (res) => dispatch({ type: 'fetchSuccess', payload: { hasMore: res.hasMore, tweets: res.tweets } })
     })
-
   useEffect(() => {
     if (intersecting && !isLoading && !error && firstFetched.current && hasMore) {
       dispatch({ type: 'intersected' })
@@ -42,5 +38,5 @@ export function useGetTweets () {
     }
   }, [page])
 
-  return { sectionSelected, setSectionSelected, tweets, error, isLoading, intersectionRef, isRefetching }
+  return { tweets, error, isLoading, intersectionRef, isRefetching }
 }

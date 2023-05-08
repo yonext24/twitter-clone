@@ -20,10 +20,10 @@ export function Interactions ({ likes, comments, retweets, bookmarks, id, isLike
     <style jsx>{`
       div {
         display: flex;
-        column-gap: 8px;
+        column-gap: ${isStretch ? '8px' : '2rem'};
         margin: 12px 0 0;
         width: ${isStretch ? '100%' : '100%'};
-        justify-content: space-between;
+        justify-content: flex-start;
       }
     `}</style>
   </>

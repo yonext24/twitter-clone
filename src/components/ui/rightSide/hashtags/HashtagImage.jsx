@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from 'react'
-import { ImageWithPlaceholder } from '../../ImageWithPlaceholder'
+import { ImageWithPlaceholder } from '../../common/ImageWithPlaceholder'
 
 export function HashtagImage ({ src, alt }) {
   const [loading, setLoading] = useState(true)

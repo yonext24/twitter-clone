@@ -5,7 +5,7 @@ import styles from './writetweetmain.module.css'
 import { useCreateTweet } from '@/hooks/useCreateTweet'
 import { LoadingTweet } from './LoadingTweet'
 import { useSession } from 'next-auth/react'
-import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
+import { ImageWithPlaceholder } from '../common/ImageWithPlaceholder'
 import { DeleteImageIcon } from '@/components/icons/tweet/DeleteImage'
 
 export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = false, replyingTo, noPadding, noIcons, addTweet }) {

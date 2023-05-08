@@ -11,14 +11,14 @@ import { WriteIcon } from '@/components/icons/navbar/Write'
 import { useModal } from '@/hooks/useModal'
 import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
-import { ModalBackground } from '../ModalBackground'
+import { ModalBackground } from '../common/ModalBackground'
 import { ProfileModal } from '../modals/ProfileModal'
-import { ImageWithPlaceholder } from '../ImageWithPlaceholder'
+import { ImageWithPlaceholder } from '../common/ImageWithPlaceholder'
 import { GithubIcon } from '@/components/icons/navbar/Github'
 import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 import Link from 'next/link'
 import styles from './navbar.module.css'
-import { ReactPortal } from '../ReactPortal'
+import { ReactPortal } from '../common/ReactPortal'
 import { TweetModal } from '../modals/TweetModal'
 import { useRouter } from 'next/router'
 
@@ -28,8 +28,6 @@ export function Navbar () {
   const { data, status } = useSession()
   const user = data?.user
   const router = useRouter()
-
-  console.log(router.route)
 
   const { size } = useContext(WindowSizeContext)
 
@@ -74,12 +72,12 @@ export function Navbar () {
               <MessageIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={false} />
             </li>
           </div>
-          <div className={styles.liContainer}>
+          <Link href='/bookmarked' className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name}>Bookmarks</h4>
               <SavedIcon color='var(--mainColor)' width='26.25px' height='26.25px' isSelected={router.route === '/bookmarked'} />
             </li>
-          </div>
+          </Link>
           <Link href='https://github.com/yonext24/twitter-clone' target='_blank' rel='noreferrer' className={styles.liContainer}>
             <li className={styles.li}>
               <h4 className={styles.name}>Github</h4>

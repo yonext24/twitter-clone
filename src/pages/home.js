@@ -2,13 +2,19 @@ import { TweetsSection } from '@/components/ui/tweetsSection/TweetsSection'
 import { useSession } from 'next-auth/react'
 import { ScreenProtector } from '@/components/ui/screenProtector/ScreenProtector'
 import { useGetTweets } from '@/hooks/useGetTweets'
-import { Layout } from '@/components/ui/Layout'
-import { SEO } from '@/components/ui/SEO'
+import { Layout } from '@/components/ui/common/Layout'
+import { SEO } from '@/components/ui/common/SEO'
+import { TweetsContext } from '@/contexts/TweetsContext'
+import { useContext, useState } from 'react'
+import { getTimeline } from '@/assets/consts'
 
 export default function Home () {
+  const [sectionSelected, setSectionSelected] = useState('foryou')
   const { status } = useSession()
 
-  const { sectionSelected, setSectionSelected, tweets, error, isLoading, intersectionRef, isRefetching } = useGetTweets()
+  const { state, dispatch } = useContext(TweetsContext)
+  const { error, tweets, isLoading, intersectionRef, isRefetching } = useGetTweets({ state, dispatch, func: getTimeline })
+
   return (
     <>
       <SEO title='Home / Twitter Clone' />
