@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-export function Slug ({ children, isStretch }) {
+export function Slug ({ children, isStretch, size }) {
   return <>
 
     <span style={{ ...(isStretch && { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }) }}>{children}</span>
@@ -7,7 +7,7 @@ export function Slug ({ children, isStretch }) {
     <style jsx>{`
     
       span {
-        font-size: 16px;
+        font-size: ${size || '16px'};
         color: var(--slugColor);
       }
     
