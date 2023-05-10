@@ -1,60 +1,29 @@
 /* eslint-disable react/no-unknown-property */
-import { getSingleTweet } from '@/assets/consts'
 import { Layout } from '@/components/ui/common/Layout'
 import { ReactPortal } from '@/components/ui/common/ReactPortal'
 import { SEO } from '@/components/ui/common/SEO'
 import { TweetModal } from '@/components/ui/modals/TweetModal'
+import { ScreenProtector } from '@/components/ui/screenProtector/ScreenProtector'
 import { Spinner } from '@/components/ui/spinner/Spinner'
 import { Tweet } from '@/components/ui/tweet/Tweet'
 import { TweetPageEntrys } from '@/components/ui/tweet/TweetPageEntrys'
 import { TweetPageInteractions } from '@/components/ui/tweet/TweetPageInteractions'
 import { TweetPageHeader } from '@/components/ui/tweetPageHeader/TweetPageHeader'
 import { WriteTweetMain } from '@/components/ui/writeTweet/WriteTweetMain'
-import { useModal } from '@/hooks/useModal'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import { useTweetPage } from '@/hooks/useTweetPage'
+import { useSession } from 'next-auth/react'
 
 export default function TweetPage () {
-  const [tweet, setTweet] = useState(null)
-  const { openModal, open, modalName, closeModal } = useModal()
-
-  const router = useRouter()
-  const { id } = router.query
-
-  const openReply = () => {
-    openModal('writeTweet')
-  }
-  const addTweet = (newTweet) => {
-    console.log(newTweet)
-    setTweet(prev => {
-      const updatedReplies = [...prev.replies, newTweet]
-      return { ...prev, replies: updatedReplies }
-    })
-  }
-  const deleteTweet = (id) => {
-    setTweet(prev => ({
-      ...prev,
-      replies: prev.replies.filter(el => el._id !== id)
-    }))
-  }
-
-  const { data, isLoading } = useQuery(
-    ['getSingleTweet', id],
-    () => (id && !tweet ? getSingleTweet(id) : null),
-    { retryDelay: 5000, refetchOnWindowFocus: false, refetchInterval: false, onSuccess: setTweet, staleTime: 600000 })
-
-  useEffect(() => {
-    if (data && !tweet) {
-      setTweet(data)
-    }
-  }, [data])
-
+  const { status } = useSession()
+  const { openReply, addTweet, deleteTweet, deleteTweetBack, setTweet, isLoading, tweet, open, closeModal, modalName, threadTweet, divRef } = useTweetPage()
   return <>
       <SEO title={tweet
         ? `${tweet.author.username} on Twitter: "${tweet.content}"`
         : 'Tweet'}
       />
+      {
+        status === 'loading' && <ScreenProtector />
+      }
 
       {
         open && modalName === 'writeTweet' &&
@@ -69,19 +38,33 @@ export default function TweetPage () {
         isLoading || !tweet
           ? <Spinner style={{ margin: '1rem auto' }} />
           : <>
-            <Tweet tweet={tweet} isInPage={true} openImageAddTweet={addTweet} deleteTweet={() => router.back()} />
+            {
+              threadTweet && <Tweet tweet={threadTweet} isInTweetReply={true} />
+            }
+            <div className='refContainer'>
+              <div className='ref' ref={divRef}></div>
+            <Tweet tweet={tweet} isInPage={true} openImageAddTweet={addTweet} deleteTweet={deleteTweetBack} />
             <TweetPageEntrys {...tweet} />
             <TweetPageInteractions setTweet={setTweet} openReply={openReply} {...tweet} />
             <WriteTweetMain noPadding isInTweetPage={true} replyingTo={tweet?.author?.slug} reply={{ isReply: true, reply: tweet }} addTweet={addTweet} />
             {
               tweet.replies.map((tweet) => <Tweet key={tweet._id} tweet={tweet} deleteTweet={deleteTweet} />)
             }
+            </div>
           </>
       }
       </main>
 
       <style jsx>{`
-
+        .ref {
+          position: absolute;
+          height: 53px;
+          top: -53px
+        }
+        .refContainer {
+          min-height: 100vh;
+          position: relative
+        }
         main {
           display: flex;
           flex-direction: column;

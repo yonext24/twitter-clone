@@ -111,7 +111,7 @@ export function Navbar () {
             ? <ImageWithPlaceholder image={data?.user?.image} height={40} width={40} alt='Your profile image' />
             : <ImageWithPlaceholder image={'/guest.webp'} height={40} width={40} alt='Yout guest image' />
         }
-          <div style={{ display: 'flex', flexGrow: '1' }}>
+          <div className={styles.text}>
             {
               status === 'authenticated' &&
               <div className={styles.nameContainer}>

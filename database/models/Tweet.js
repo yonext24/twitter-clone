@@ -10,20 +10,26 @@ const TweetSchema = new mongoose.Schema({
     ref: 'UserInteractions',
     required: true
   },
-  isReplying: {
-    type: Boolean,
-    required: true,
-    default: false
-  },
-  replyingTo: {
-    type: mongoose.Types.ObjectId,
-    ref: 'Tweet',
-    required: false
-  },
-  replyingUser: {
-    type: mongoose.Types.ObjectId,
-    ref: 'UserInteractions',
-    required: false
+  reply: {
+    isReplying: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    replyingTo: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Tweet',
+      required: false
+    },
+    replyingUser: {
+      type: mongoose.Types.ObjectId,
+      ref: 'UserInteractions',
+      required: false
+    },
+    isReplyDeleted: {
+      type: Boolean,
+      default: false
+    }
   },
   replies: [{
     type: mongoose.Types.ObjectId,

@@ -20,6 +20,7 @@ const INITIAL_STATE = {
 export default function BookmarkedPage () {
   const [state, dispatch] = useReducer(TweetsReducer, INITIAL_STATE)
   const { error, tweets, isLoading, intersectionRef, isRefetching } = useGetTweets({ state, dispatch, func: getUserBookmarks })
+  console.log(tweets)
 
   return <>
     <SEO title="Bookmarks / Twitter Clone" />

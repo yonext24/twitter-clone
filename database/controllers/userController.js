@@ -64,6 +64,7 @@ export async function getBookmarked (req, res) {
 
         return { ...tweet._doc, isLiked: likeMatch, isBookmarked: true }
       })
+    console.log(parsedDocuments)
 
     return res.status(200).json({ tweets: parsedDocuments, hasMore })
   } catch (err) {

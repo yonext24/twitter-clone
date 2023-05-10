@@ -12,12 +12,12 @@ export function TweetPageEntrys ({ replies, likes, bookmarks }) {
     }
     {
       replies.length >= 1 && <div className='entryContainer'>
-        <span>{replies.length}</span>
+        <span>{replies.length || ''}</span>
         <p>{replies.length === 1 ? 'Reply' : 'Replies'}</p>
       </div>
     }
     {
-      bookmarks && <div className='entryContainer'>
+      bookmarks > 0 && <div className='entryContainer'>
       <span>{bookmarks}</span>
       <p>{bookmarks === 1 ? 'Bookmark' : 'Bookmarks'}</p>
     </div>

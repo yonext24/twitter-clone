@@ -109,6 +109,10 @@
 .nameContainer label {
   color: rgba(255, 255, 255, .4);
 }
+.text {
+  display: flex;
+  flex-grow: 1
+}
 .moreContainer {
   flex: 1;
   display: flex;
@@ -143,8 +147,8 @@
   .profile {
     width: max-content;
   }
-  .profile > div {
-    display: none!important;
+  .text {
+    display: none;
   }
   .tweetButton {
     padding: 0;

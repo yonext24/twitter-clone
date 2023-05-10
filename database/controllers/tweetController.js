@@ -28,13 +28,14 @@ export const getSingleTweet = async (req, res) => {
     path: 'author'
   })
   await tweet.populate({
-    path: 'replyingUser'
+    path: 'reply.replyingUser',
+    select: 'slug'
   })
   await tweet.populate({
     path: 'replies',
     populate: [
       { path: 'author' },
-      { path: 'replyingUser', select: ['slug'] }
+      { path: 'reply.replyingUser', select: ['slug'] }
     ]
   })
 
@@ -65,7 +66,6 @@ export const createTweet = async (req, res) => {
   }
   const { data: body } = JSON.parse(req.body)
   const { replyingUser, replyingTo, data, image } = body
-  console.log(body)
 
   const hasImage = Boolean(image?.src)
   const isReplying = Boolean(replyingTo && replyingUser)
@@ -80,15 +80,17 @@ export const createTweet = async (req, res) => {
     const tweet = new Tweet({
       content: data,
       author: session.user.id,
-      isReplying,
+      reply: {
+        isReplying,
+        ...(isReplying && {
+          replyingUser,
+          replyingTo
+        })
+      },
       image: {
         hasImage,
         ...(hasImage && { src: image.src, id: image.id, width: image.width, height: image.height, aspectRatio: image.width / image.height })
-      },
-      ...(isReplying && {
-        replyingUser,
-        replyingTo
-      })
+      }
     })
 
     if (isReplying) {
@@ -106,8 +108,8 @@ export const createTweet = async (req, res) => {
 
     await tweet.save()
     await tweet.populate({ path: 'author', select: ['image', 'username', 'slug'] })
-    if (tweet.isReplying) {
-      await tweet.populate({ path: 'replyingUser', select: ['slug'] })
+    if (tweet.reply.isReplying) {
+      await tweet.populate({ path: 'reply.replyingUser', select: 'slug' })
     }
 
     return res.status(200).json(tweet)
@@ -136,7 +138,7 @@ export const getTimelineTweets = async (req, res) => {
         path: 'author',
         select: ['image', 'username', 'slug']
       })
-      .populate({ path: 'replyingUser', select: ['slug'] })
+      .populate({ path: 'reply.replyingUser', select: ['slug'] })
 
     const hasMore = myDocuments.length === porPagina
 
@@ -151,9 +153,9 @@ export const getTimelineTweets = async (req, res) => {
           return { ...document._doc, isLiked: likeMatch, isBookmarked: bookmarkMatch }
         })
         .map((el, _, array) => {
-          if (!el.isReplying) return el
+          if (!el.reply.isReplying) return el
           else {
-            const index = array.findIndex(e => e._id.equals(el.replyingTo))
+            const index = array.findIndex(e => e._id.equals(el.reply.replyingTo))
             if (index < 0) return el
             if (array[index].currentReplie) return el
             array[index].currentReplie = el._id
@@ -220,20 +222,40 @@ export const deleteTweet = async (req, res) => {
   const session = await getServerSession(req, res, options)
   if (!session) return res.status(401).json({ error: 'You are not logged!' })
 
-  const tweet = await Tweet.findOne({ _id: tweetId })
-  if (tweet.author._id.toString() !== session.user.id && session.user.role !== 'admin') return res.status(406).json({ error: 'You are not authorized' })
+  try {
+    const tweet = await Tweet.findOne({ _id: tweetId })
+    if (tweet.author._id.toString() !== session.user.id && session.user.role !== 'admin') return res.status(406).json({ error: 'You are not authorized' })
 
-  if (tweet.image.hasImage) {
-    await deleteImage(session.user.id, tweet.image.id)
+    if (tweet.image.hasImage) {
+      await deleteImage(session.user.id, tweet.image.id)
+    }
+    if (tweet.replies.length > 0) {
+      await Tweet.updateMany({ 'reply.replyingTo': tweetId }, { 'reply.isReplyDeleted': true })
+    }
+    if (tweet.bookmarks > 0) {
+      await UserInteractions.updateMany(
+        { bookmarks: { $elemMatch: { tweet: { $eq: tweetId } } } },
+        { $pull: { bookmarks: { tweet: tweetId } } }
+      )
+    }
+    if (tweet.likes > 0) {
+      await UserInteractions.updateMany(
+        { likedTweets: { $elemMatch: { tweet: { $eq: tweetId } } } },
+        { $pull: { likedTweets: { tweet: tweetId } } }
+      )
+    }
+
+    await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: { tweet: tweetId } } })
+    await Tweet.deleteOne({ _id: tweet._id })
+    if (tweet.isReplying) {
+      await Tweet.updateOne({ _id: tweet.replyingTo }, { $pull: { replies: tweetId } })
+    }
+
+    return res.status(200).json({ success: 'Tweet Deleted' })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ error: 'Error while deleting tweet' })
   }
-
-  await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: { tweet: tweetId } } })
-  await Tweet.deleteOne({ _id: tweet._id })
-  if (tweet.isReplying) {
-    await Tweet.updateOne({ _id: tweet.replyingTo }, { $pull: { replies: tweetId } })
-  }
-
-  return res.status(200).json({ success: 'Tweet Deleted' })
 }
 export const bookmarkTweet = async (req, res) => {
   if (!req.body) return res.status(400).json({ error: 'Id is needed ' })

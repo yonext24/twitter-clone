@@ -50,10 +50,10 @@ export const TweetsReducer = (state, action) => {
       let newTweets = [...state.tweets]
       const tweetToDelete = newTweets.find(el => el._id === id)
       if (!tweetToDelete) return { ...state }
-      const { isReplying, replyingTo, isCurrentlyReplying } = tweetToDelete
+      const { isReplying, isCurrentlyReplying } = tweetToDelete
 
       if (isReplying) {
-        const tweetReplyingIndex = newTweets.findIndex(el => el._id === replyingTo)
+        const tweetReplyingIndex = newTweets.findIndex(el => el._id === tweetToDelete.replyingTo)
         if (tweetReplyingIndex >= 0) {
           newTweets[tweetReplyingIndex].replies = newTweets[tweetReplyingIndex].replies.filter(el => el !== id)
         }

@@ -16,9 +16,10 @@ import { ReactPortal } from '../common/ReactPortal'
 import { TweetModal } from '../modals/TweetModal'
 import { OpenImage } from '../modals/OpenImage'
 
-export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false, withoutImage, isStretch = false, openImageAddTweet, deleteTweet, noOpenImage }) {
+export function Tweet ({ tweet, isInReply = false, isInTweetReply = false, replyingTo, isInPage = false, withoutImage, isStretch = false, openImageAddTweet, deleteTweet, noOpenImage }) {
   const { image: userImage, username, slug } = tweet.author
-  const { content, createdAt, replies, likes, _id, isLiked, isBookmarked, image, currentReplie } = tweet
+  const { content, createdAt, replies, likes, _id, isLiked, isBookmarked, image, currentReplie, reply } = tweet
+  const { isReplying } = reply
   const formattedDate = formatDate(createdAt, isInPage)
   const { data } = useSession()
   const user = data?.user
@@ -37,7 +38,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
   }
   return (
   <>
-      <ReactPortal wrapperId='openimage-modal' deleteDuplicates>
+      <ReactPortal wrapperId='openimage-modal'>
       {
         open && modalName === 'image' && <OpenImage closeModal={closeModal} id={_id} open={open} addTweetToTweetPage={openImageAddTweet} />
       }
@@ -55,7 +56,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
     {
       open && modalName === 'options' && <ModalBackground closeModal={closeModal} />
     }
-    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`} style={{ borderBottom: (!isInReply && !isInPage && !currentReplie) && 'var(--borderProperty)', cursor: isInPage || isInReply ? 'unset' : 'pointer', padding: isInPage && '12px 6px' }}>
+    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`} style={{ borderBottom: (!isInReply && !isInPage && !currentReplie && !isInTweetReply) && 'var(--borderProperty)', cursor: isInPage || isInReply ? 'unset' : 'pointer', padding: isInPage && '12px 6px' }}>
       {
         open && modalName === 'options' && <TweetOptionsModal id={_id} username={username} isOwn={ user?.name === username || user?.role === 'admin' } openModal={openModal} />
       }
@@ -64,7 +65,7 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
           !isInPage && <ImageWithPlaceholder image={userImage} height={48} width={48} alt='Your profile image' />
         }
           {
-            (isInReply || currentReplie) && <div className={styles.replyBar}></div>
+            (isInReply || currentReplie || isInTweetReply) && <div className={styles.replyBar}></div>
           }
         </div>
       <div className={styles.dataContainer}>
@@ -91,9 +92,9 @@ export function Tweet ({ tweet, isInReply = false, replyingTo, isInPage = false,
           }
         </div>
         {
-          tweet.isReplying && !isInReply && !isStretch && (
+          isReplying && !isInReply && !isStretch && !isInPage && (
             <p style={{ color: 'var(--slugColor)', marginTop: '', marginBottom: isInPage ? '8px' : '' }}>Replying to
-            <span style={{ color: 'var(--blue)', cursor: 'pointer' }}> @{tweet.replyingUser.slug}</span>
+            <span style={{ color: 'var(--blue)', cursor: 'pointer' }}> @{reply.replyingUser.slug}</span>
             </p>
           )
         }
