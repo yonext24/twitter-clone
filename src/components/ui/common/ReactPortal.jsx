@@ -2,7 +2,7 @@ import { createWrapper } from '@/assets/createWrapper'
 import { useLayoutEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-export function ReactPortal ({ children, wrapperId = 'portal-modal-wrapper', deleteDuplicates = false }) {
+export function ReactPortal ({ children, wrapperId = 'portal-modal-wrapper' }) {
   const [wrapperElement, setWrapperElement] = useState(null)
 
   useLayoutEffect(() => {
@@ -10,14 +10,6 @@ export function ReactPortal ({ children, wrapperId = 'portal-modal-wrapper', del
     let systemCreated = false
     // if element is not found with wrapperId or wrapperId is not provided,
     // create and append to body
-
-    if (element) {
-      if (deleteDuplicates) {
-        if (element.childNodes.length > 1) {
-          element.removeChild(element.firstChild)
-        }
-      }
-    }
 
     if (!element) {
       systemCreated = true
