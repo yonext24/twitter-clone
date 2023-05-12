@@ -4,10 +4,16 @@ import { useModalLogic } from '@/hooks/useModalLogic'
 import { useTweetsContext } from '@/hooks/useTweetsContext'
 import { toast } from 'react-toastify'
 
-export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
-  console.log(id)
+export function DeleteTweetModal ({ closeModal, id, externalDelete }) {
+  useModalLogic({
+    closeModal,
+    action: function handleKeyDown (e) {
+      if (e.key === 'Enter') {
+        handleClick()
+      }
+    }
+  })
 
-  useModalLogic({ closeModal })
   const { dispatch } = useTweetsContext()
 
   const handleClick = async () => {
@@ -16,7 +22,7 @@ export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
         if (res.ok) {
           closeModal()
           dispatch({ type: 'deleteTweet', payload: id })
-          deleteTweetFromPage && deleteTweetFromPage(id)
+          externalDelete && externalDelete(id)
           toast('Your tweet was deleted')
         }
       })
@@ -59,7 +65,7 @@ export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
       position: absolute;
       background-color: var(--background);
       color: var(--mainColor);
-      padding: 32px;
+      padding: 32px 32px;
     }
     .close {
       background-color: var(--background);
@@ -73,8 +79,9 @@ export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
       width: 100%;
       cursor: pointer;
       border-radius: 9999px;
-      padding: 12px 0;
+      padding: 10px 0;
       font-weight: bold;
+      font-size: 15px
     }
     .close button:nth-of-type(2) {
       color: white;
@@ -84,10 +91,12 @@ export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
     p {
       color: rgb(113, 118, 123);
       line-height: 20px;
+      font-size: 15px;
     }
     h3 {
       width: 256px;
       font-size: 20px;
+      margin-bottom: 8px
     }
 
   `}</style>
