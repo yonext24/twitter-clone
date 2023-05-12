@@ -45,7 +45,7 @@ export const getSingleTweet = async (req, res) => {
     const isMainTweetBookmarked = user.bookmarks.some(el => el.tweet.equals(tweet._id))
 
     const parsedReplies = tweet.replies.map(document => {
-      const likeMatch = user.likedTweets.includes(document._id)
+      const likeMatch = user.likedTweets.some(el => el.tweet.equals(document._id))
       const bookmarkMatch = user.bookmarks.some(el => el.tweet.equals(document._id))
 
       return { ...document._doc, isLiked: likeMatch, isBookmarked: bookmarkMatch }
