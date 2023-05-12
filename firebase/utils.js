@@ -1,4 +1,4 @@
-import { getImageDimensions } from '@/assets/consts'
+import { getImageDimensions } from '@/assets/getImageDimensions'
 import { storage } from './client'
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 
