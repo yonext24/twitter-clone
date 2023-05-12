@@ -20,7 +20,6 @@ const INITIAL_STATE = {
 export default function BookmarkedPage () {
   const [state, dispatch] = useReducer(TweetsReducer, INITIAL_STATE)
   const { error, tweets, isLoading, intersectionRef, isRefetching } = useGetTweets({ state, dispatch, func: getUserBookmarks })
-  console.log(tweets)
 
   return <>
     <SEO title="Bookmarks / Twitter Clone" />
@@ -28,7 +27,7 @@ export default function BookmarkedPage () {
     <main>
       <BookmarksHeader />
       {
-        tweets.map(el => <Tweet key={el._id} tweet={el} />)
+        tweets.map(el => <Tweet key={el._id} tweet={el} deleteTweet={() => dispatch({ type: 'deleteTweet', payload: el._id })} />)
       }
       {
         (isLoading || isRefetching) && <Spinner style={{ margin: '15px auto' }} />

@@ -40,7 +40,7 @@ export function Layout ({ children }) {
     <Aside />
     <ToastContainer
       position="bottom-center"
-      autoClose={3000}
+      autoClose={2000}
       limit={1}
       hideProgressBar
       newestOnTop={false}

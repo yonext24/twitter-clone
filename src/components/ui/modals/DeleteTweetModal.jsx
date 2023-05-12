@@ -14,6 +14,7 @@ export function DeleteTweetModal ({ closeModal, id, deleteTweetFromPage }) {
     deleteTweet(id)
       .then(res => {
         if (res.ok) {
+          closeModal()
           dispatch({ type: 'deleteTweet', payload: id })
           deleteTweetFromPage && deleteTweetFromPage(id)
           toast('Your tweet was deleted')

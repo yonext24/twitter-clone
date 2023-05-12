@@ -2,9 +2,20 @@
 export const TweetsReducer = (state, action) => {
   switch (action.type) {
     case 'addTweet':
+      const addTweet = action.payload
+      const addNewTweets = [...state.tweets]
+      if (addTweet.reply.isReplying) {
+        const replyingIndex = addNewTweets.findIndex(el => el._id === addTweet.reply.replyingTo)
+        if (replyingIndex >= 0) {
+          addNewTweets[replyingIndex] = {
+            ...addNewTweets[replyingIndex],
+            replies: [...addNewTweets[replyingIndex].replies, addTweet._id]
+          }
+        }
+      }
       return {
         ...state,
-        tweets: [action.payload].concat(state.tweets)
+        tweets: [action.payload].concat(addNewTweets)
       }
     case 'fetchSuccess':
       return {
@@ -50,10 +61,10 @@ export const TweetsReducer = (state, action) => {
       let newTweets = [...state.tweets]
       const tweetToDelete = newTweets.find(el => el._id === id)
       if (!tweetToDelete) return { ...state }
-      const { isReplying, isCurrentlyReplying } = tweetToDelete
+      const { reply, isCurrentlyReplying } = tweetToDelete
 
-      if (isReplying) {
-        const tweetReplyingIndex = newTweets.findIndex(el => el._id === tweetToDelete.replyingTo)
+      if (reply.isReplying) {
+        const tweetReplyingIndex = newTweets.findIndex(el => el._id === reply.replyingTo)
         if (tweetReplyingIndex >= 0) {
           newTweets[tweetReplyingIndex].replies = newTweets[tweetReplyingIndex].replies.filter(el => el !== id)
         }

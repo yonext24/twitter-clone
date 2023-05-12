@@ -126,7 +126,7 @@ export const getTimelineTweets = async (req, res) => {
   try {
     await dbConnect()
 
-    const porPagina = 5
+    const porPagina = 10
     const pagina = req.query.page
     const saltar = (pagina - 1) * porPagina
 
@@ -162,15 +162,50 @@ export const getTimelineTweets = async (req, res) => {
             return { ...el, isCurrentlyReplying: array[index]._id }
           }
         })
+      parsedDocuments.forEach(el => console.log(el.content))
       const correctlySorted = []
       parsedDocuments.forEach(el => {
-        if (correctlySorted.some(document => el._id.equals(document._id))) return
-
-        if (!el.currentReplie && !el.isCurrentlyReplying) correctlySorted.push(el)
-        if (el.currentReplie) {
-          const index = parsedDocuments.findIndex(({ _id }) => _id.equals(el.currentReplie))
+        if (!el.currentReplie && !el.isCurrentlyReplying) {
           correctlySorted.push(el)
-          index >= 0 && correctlySorted.push(parsedDocuments[index])
+          return
+        }
+        // ^ Si el elemento no está respondiendo a nada o no está siendo respondido se agrega y listo
+
+        // el problema es que si el elemento que esta respondiendo viene antes que el que está siendo respondido se van a
+        // ordenar incorrectamente
+
+        if (el.isCurrentlyReplying) {
+          const indexOfElementBeingResponded = correctlySorted.findIndex(({ _id }) => _id.equals(el.isCurrentlyReplying))
+          // ^ Si el elemento actual del forEach esta respondiendo, se localiza el elemento al que está respondiendo
+
+          if (indexOfElementBeingResponded >= 0) {
+            // ^ Si el indice se encuentra quiere decir que dentro del array ya hay un elemento que está siendo respondido por este elemento
+            // por lo que este elemento se inyecta justo abajo de ese
+            correctlySorted.splice(indexOfElementBeingResponded, 0, el)
+          } else {
+            if (!el.currentReplie) {
+              // ^ Si el elemento no está respondiendo a nada y no se encuentra el elemento siendo respondido simplemente se agrega atrás de todo
+              correctlySorted.push(el)
+              return
+            }
+            // Si el elemento está siendo respondido hay que verificar si la respuesta no se encuentra dentro del array para
+            // inyectar este elemento arriba de esta respuesta, caso contrario simplemente se agrega al final del array
+            // estas verificaciones deben hacerse porque es posible que un tweet este respondiendo y siendo respondido a la vez
+            const indexOfElementResponding = correctlySorted.findIndex(doc => doc._id.equals(el.currentReplie))
+            if (indexOfElementResponding < 0) correctlySorted.push(el)
+            else correctlySorted.splice(indexOfElementResponding, 0, el)
+          }
+        } else if (el.currentReplie) {
+          // ^ Si el elemento tiene una respuesta, pero no está respondiendo a nada, se verifica si el elemento que lo está respondiendo
+          // ya se encuentra dentro del array, para en ese caso agregarlo arriba, de lo contrario, simplemente se agrega
+          const indexOfRespondingElement = correctlySorted.findIndex(({ _id }) => _id.equals(el.currentReplie))
+
+          if (indexOfRespondingElement < 0) {
+            correctlySorted.push(el)
+            return
+          }
+
+          correctlySorted.splice(indexOfRespondingElement, 0, el)
         }
       })
 
@@ -247,8 +282,8 @@ export const deleteTweet = async (req, res) => {
 
     await UserInteractions.updateOne({ _id: session.user.id }, { $pull: { tweets: { tweet: tweetId } } })
     await Tweet.deleteOne({ _id: tweet._id })
-    if (tweet.isReplying) {
-      await Tweet.updateOne({ _id: tweet.replyingTo }, { $pull: { replies: tweetId } })
+    if (tweet.reply.isReplying) {
+      await Tweet.updateOne({ _id: tweet.reply.replyingTo }, { $pull: { replies: tweetId } })
     }
 
     return res.status(200).json({ success: 'Tweet Deleted' })
