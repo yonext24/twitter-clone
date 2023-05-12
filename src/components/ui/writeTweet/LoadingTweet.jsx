@@ -10,12 +10,12 @@ export function LoadingTweet ({ isLoading, isSuccess, isError }) {
   useEffect(() => {
     if (isLoading) {
       setShowing(true)
-      setPercentage(Math.ceil(Math.random() * 12))
+      setPercentage(Math.ceil(Math.random() * 10))
     }
   }, [isLoading])
 
   useEffect(() => {
-    if (isLoading && percentage < 50) {
+    if (isLoading && percentage < 80) {
       clearTimeout(timeoutRef.current)
       timeoutRef.current = setTimeout(() => {
         setPercentage((prevPercentage) => prevPercentage + Math.ceil(Math.random() * 20))

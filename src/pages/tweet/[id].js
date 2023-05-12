@@ -10,12 +10,16 @@ import { TweetPageEntrys } from '@/components/ui/tweet/TweetPageEntrys'
 import { TweetPageInteractions } from '@/components/ui/tweet/TweetPageInteractions'
 import { TweetPageHeader } from '@/components/ui/tweetPageHeader/TweetPageHeader'
 import { WriteTweetMain } from '@/components/ui/writeTweet/WriteTweetMain'
+import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 import { useTweetPage } from '@/hooks/useTweetPage'
 import { useSession } from 'next-auth/react'
+import { useContext } from 'react'
 
 export default function TweetPage () {
   const { status } = useSession()
   const { openReply, addTweet, deleteTweet, deleteTweetBack, setTweet, isLoading, tweet, open, closeModal, modalName, threadTweet, divRef } = useTweetPage()
+  const { size } = useContext(WindowSizeContext)
+
   return <>
       <SEO title={tweet
         ? `${tweet.author.username} on Twitter: "${tweet.content}"`
@@ -69,7 +73,7 @@ export default function TweetPage () {
           display: flex;
           flex-direction: column;
           height: auto;
-          min-height: 100vh;
+          min-height: ${size > 1000 ? '100%' : '100vh'};
           width: 100%;
           max-width: 600px;
           border-left: 1px solid var(--borderColor);
