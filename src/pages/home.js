@@ -14,7 +14,6 @@ export default function Home () {
 
   const { state, dispatch } = useContext(TweetsContext)
   const { error, tweets, isLoading, intersectionRef, isRefetching } = useGetTweets({ state, dispatch, func: getTimeline })
-  console.log(tweets)
 
   return (
     <>

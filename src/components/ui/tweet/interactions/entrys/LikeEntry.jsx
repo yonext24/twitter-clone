@@ -16,9 +16,8 @@ export function LikeEntry ({ id, isInPage = false, width = '1.25rem', handleAddL
       return
     }
 
-    if (isInPage) {
-      handleAddLike(isLiked)
-    }
+    handleAddLike && handleAddLike(id)
+
     dispatch({ type: 'addLike', payload: id })
     likeTweet(id)
   }

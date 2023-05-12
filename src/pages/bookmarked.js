@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unknown-property */
+import { INITIAL_TWEETS_STATE } from '@/assets/INITIAL_TWEETS_STATE'
 import { getUserBookmarks } from '@/assets/consts'
+import { getExternalInteractions } from '@/assets/getExternalInteractions'
 import { BookmarksHeader } from '@/components/ui/bookmarksHeader/BookmarksHeader'
 import { Layout } from '@/components/ui/common/Layout'
 import { SEO } from '@/components/ui/common/SEO'
@@ -9,17 +11,10 @@ import { useGetTweets } from '@/hooks/useGetTweets'
 import { TweetsReducer } from '@/reducers/TweetsReducer'
 import { useReducer } from 'react'
 
-const INITIAL_STATE = {
-  tweets: [],
-  hasMore: true,
-  page: {
-    number: 1,
-    fetched: true
-  }
-}
 export default function BookmarkedPage () {
-  const [state, dispatch] = useReducer(TweetsReducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(TweetsReducer, INITIAL_TWEETS_STATE)
   const { error, tweets, isLoading, intersectionRef, isRefetching } = useGetTweets({ state, dispatch, func: getUserBookmarks })
+  const externalInteractions = getExternalInteractions(dispatch)
 
   return <>
     <SEO title="Bookmarks / Twitter Clone" />
@@ -27,7 +22,7 @@ export default function BookmarkedPage () {
     <main>
       <BookmarksHeader />
       {
-        tweets.map(el => <Tweet key={el._id} tweet={el} deleteTweet={() => dispatch({ type: 'deleteTweet', payload: el._id })} />)
+        tweets.map(el => <Tweet key={el._id} tweet={el} externalInteractions={externalInteractions} upReply />)
       }
       {
         (isLoading || isRefetching) && <Spinner style={{ margin: '15px auto' }} />

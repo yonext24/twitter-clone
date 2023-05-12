@@ -16,6 +16,8 @@ import { TweetModal } from './TweetModal'
 export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
   const {
     tweet,
+    replies,
+    externalInteractions,
     open,
     isLoading,
     setTweet,
@@ -64,7 +66,7 @@ export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
                 <TweetPageInteractions setTweet={setTweet} openReply={openReply} {...tweet} />
                 <WriteTweetMain noPadding noIcons isInTweetPage={true} replyingTo={tweet?.author?.slug} reply={{ isReply: true, reply: tweet }} addTweet={addTweet} />
                 {
-                  tweet.replies.map((tweet) => <Tweet key={tweet._id} tweet={tweet} isStretch noOpenImage />)
+                  replies.map((tweet) => <Tweet key={tweet._id} tweet={tweet} externalInteractions={externalInteractions} upReply isStretch noOpenImage />)
                 }
               </div>
             </div>

@@ -6,7 +6,7 @@ import { useTweetsContext } from '@/hooks/useTweetsContext'
 import { SavedIcon } from '@/components/icons/navbar/Saved'
 import { toast } from 'react-toastify'
 
-export function BookmarkEntry ({ id, isInPage = false, width = '1.25rem', handleAddBookmark, isBookmarked }) {
+export function BookmarkEntry ({ id, width = '1.25rem', handleAddBookmark, isBookmarked }) {
   const { status } = useSession()
   const router = useRouter()
   const { dispatch } = useTweetsContext()
@@ -17,10 +17,8 @@ export function BookmarkEntry ({ id, isInPage = false, width = '1.25rem', handle
       router.push('/')
       return
     }
+    handleAddBookmark && handleAddBookmark(id)
 
-    if (isInPage) {
-      handleAddBookmark(isBookmarked)
-    }
     dispatch({ type: 'addBookmark', payload: id })
     bookmarkTweet(id)
       .then(res => {

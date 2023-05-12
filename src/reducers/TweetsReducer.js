@@ -23,6 +23,22 @@ export const TweetsReducer = (state, action) => {
         tweets: state.tweets.concat(action.payload.tweets),
         hasMore: action.payload.hasMore
       }
+    case 'setTweets':
+      return {
+        ...state,
+        tweets: action.payload
+      }
+    case 'upReplies':
+      console.log(action.payload)
+      return {
+        ...state,
+        tweets: state.tweets.map(el => {
+          if (el._id === action.payload.commentId) {
+            return { ...el, replies: [...el.replies, action.payload.newTweet] }
+          }
+          return el
+        })
+      }
     case 'intersected':
       return {
         ...state,

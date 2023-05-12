@@ -17,7 +17,8 @@ import { useContext } from 'react'
 
 export default function TweetPage () {
   const { status } = useSession()
-  const { openReply, addTweet, deleteTweet, deleteTweetBack, setTweet, isLoading, tweet, open, closeModal, modalName, threadTweet, divRef } = useTweetPage()
+  const { openReply, setTweet, closeModal, deleteTweetBack, isLoading, tweet, replies, open, threadTweet, divRef, modalName, externalInteractions } = useTweetPage()
+
   const { size } = useContext(WindowSizeContext)
 
   return <>
@@ -32,7 +33,7 @@ export default function TweetPage () {
       {
         open && modalName === 'writeTweet' &&
         <ReactPortal wrapperId='writetweet-modal'>
-          <TweetModal closeModal={closeModal} addTweet={addTweet} reply={{ isReply: true, reply: tweet }} />
+          <TweetModal closeModal={closeModal} addTweet={externalInteractions.addComment} reply={{ isReply: true, reply: tweet }} />
         </ReactPortal>
       }
 
@@ -47,12 +48,12 @@ export default function TweetPage () {
             }
             <div className='refContainer'>
               <div className='ref' ref={divRef}></div>
-            <Tweet tweet={tweet} isInPage={true} openImageAddTweet={addTweet} deleteTweet={deleteTweetBack} />
+            <Tweet tweet={tweet} isInPage={true} openImageAddTweet={externalInteractions.addComment} deleteTweet={deleteTweetBack} />
             <TweetPageEntrys {...tweet} />
             <TweetPageInteractions setTweet={setTweet} openReply={openReply} {...tweet} />
-            <WriteTweetMain noPadding isInTweetPage={true} replyingTo={tweet?.author?.slug} reply={{ isReply: true, reply: tweet }} addTweet={addTweet} />
+            <WriteTweetMain noPadding isInTweetPage={true} replyingTo={tweet?.author?.slug} reply={{ isReply: true, reply: tweet }} addTweet={externalInteractions.addComment} />
             {
-              tweet.replies.map((tweet) => <Tweet key={tweet._id} tweet={tweet} deleteTweet={deleteTweet} />)
+              replies.map((tweet) => <Tweet key={tweet._id} tweet={tweet} externalInteractions={externalInteractions} upReply />)
             }
             </div>
           </>

@@ -4,7 +4,7 @@ import { WriteTweetMain } from '../writeTweet/WriteTweetMain'
 import { useModalLogic } from '@/hooks/useModalLogic'
 
 /* eslint-disable react/no-unknown-property */
-export function TweetModal ({ addTweet, closeModal, reply }) {
+export function TweetModal ({ addTweet, closeModal, reply, upReplies }) {
   useModalLogic({ closeModal })
 
   return <>
@@ -17,7 +17,7 @@ export function TweetModal ({ addTweet, closeModal, reply }) {
       {
         reply.isReply && <Tweet tweet={reply.reply} isInReply={true} replyingTo={reply.reply.author.slug} />
       }
-      <WriteTweetMain iniciated={true} addTweet={addTweet} reply={reply} />
+      <WriteTweetMain iniciated={true} addTweet={addTweet} reply={reply} upReplies={upReplies} autoFocus />
     </div>
   </div>
 

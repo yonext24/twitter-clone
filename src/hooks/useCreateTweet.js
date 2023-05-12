@@ -14,7 +14,7 @@ const ToastNotif = ({ id }) => {
   </>
 }
 
-export function useCreateTweet ({ iniciated, isInTweetPage, addTweet }) {
+export function useCreateTweet ({ iniciated, isInTweetPage, addTweet, upReplies, reply }) {
   const [focused, setFocused] = useState({
     focused: false,
     rest: iniciated,
@@ -37,6 +37,7 @@ export function useCreateTweet ({ iniciated, isInTweetPage, addTweet }) {
     mutationFn: createTweet,
     onSuccess: (res) => {
       addTweet && addTweet(res)
+      upReplies && upReplies(reply.reply._id, res._id)
       dispatch({ type: 'addTweet', payload: res })
       setValue('')
       setImage(null)
@@ -61,6 +62,11 @@ export function useCreateTweet ({ iniciated, isInTweetPage, addTweet }) {
       ...(image && { imageToUploadData: { hasImage: true, image, userId: user.id } })
     })
   }, [mutate, image, user])
+  const handleKeyDown = (event) => {
+    if (event.ctrlKey && event.keyCode === 13) {
+      handleTweet(value, reply)
+    }
+  }
 
   const handleFile = useCallback(e => {
     setImage(e.target.files[0])
@@ -96,5 +102,5 @@ export function useCreateTweet ({ iniciated, isInTweetPage, addTweet }) {
     )}px`
   }, [value, textareaRef.current])
 
-  return { handleTweet, value, setValue, isLoading, isError, isSuccess, focused, setFocused, handleFile, handleFileClear, image, inputRef, textareaRef }
+  return { handleTweet, value, setValue, handleKeyDown, isLoading, isError, isSuccess, focused, setFocused, handleFile, handleFileClear, image, inputRef, textareaRef }
 }

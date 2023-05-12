@@ -1,4 +1,4 @@
-import { formatDate } from '@/assets/consts'
+import { formatDate } from '@/assets/formatDate.js'
 import { PointsIcon } from '@/components/icons/navbar/Points'
 import { useModal } from '@/hooks/useModal'
 import { useSession } from 'next-auth/react'
@@ -16,7 +16,19 @@ import { ReactPortal } from '../common/ReactPortal'
 import { TweetModal } from '../modals/TweetModal'
 import { OpenImage } from '../modals/OpenImage'
 
-export function Tweet ({ tweet, isInReply = false, isInTweetReply = false, replyingTo, isInPage = false, withoutImage, isStretch = false, openImageAddTweet, deleteTweet, noOpenImage }) {
+export function Tweet ({
+  tweet,
+  isInReply = false,
+  isInTweetReply = false,
+  replyingTo,
+  externalInteractions,
+  upReply,
+  isInPage = false,
+  isStretch = false,
+  openImageAddTweet,
+  noOpenImage,
+  withoutImage
+}) {
   const { image: userImage, username, slug } = tweet.author
   const { content, createdAt, replies, likes, _id, isLiked, isBookmarked, image, currentReplie, reply } = tweet
   const { isReplying } = reply
@@ -45,12 +57,12 @@ export function Tweet ({ tweet, isInReply = false, isInTweetReply = false, reply
       </ReactPortal>
       <ReactPortal wrapperId='writetweet-modal'>
       {
-        open && modalName === 'writeTweet' && <TweetModal closeModal={closeModal} reply={{ isReply: true, reply: tweet }} />
+        open && modalName === 'writeTweet' && <TweetModal upReplies={upReply ? externalInteractions?.upReplies : false} closeModal={closeModal} reply={{ isReply: true, reply: tweet }} />
       }
       </ReactPortal>
       <ReactPortal wrapperId='deleteTweet-modal'>
       {
-        open && modalName === 'delete' && <DeleteTweetModal closeModal={closeModal} id={tweet._id} deleteTweetFromPage={deleteTweet} />
+        open && modalName === 'delete' && <DeleteTweetModal closeModal={closeModal} id={tweet._id} externalDelete={externalInteractions?.delete} />
       }
       </ReactPortal>
     {
@@ -121,7 +133,7 @@ export function Tweet ({ tweet, isInReply = false, isInTweetReply = false, reply
           </div>
         }
         {
-          (!isInReply && !isInPage) && <Interactions id={_id} comments={replies.length} likes={likes} retweets={0} isLiked={isLiked} openReply={openReply} isStretch={isStretch} isBookmarked={isBookmarked} />
+          (!isInReply && !isInPage) && <Interactions id={_id} comments={replies.length} likes={likes} retweets={0} externalInteractions={externalInteractions} isLiked={isLiked} openReply={openReply} isStretch={isStretch} isBookmarked={isBookmarked} />
         }
         {
           isInReply && <p style={{ color: 'var(--slugColor)', marginTop: '1rem' }}>Replying to

@@ -8,7 +8,17 @@ import { useSession } from 'next-auth/react'
 import { ImageWithPlaceholder } from '../common/ImageWithPlaceholder'
 import { DeleteImageIcon } from '@/components/icons/tweet/DeleteImage'
 
-export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = false, replyingTo, noPadding, noIcons, addTweet }) {
+export function WriteTweetMain ({
+  iniciated = false,
+  reply,
+  isInTweetPage = false,
+  replyingTo,
+  noPadding,
+  noIcons,
+  addTweet,
+  upReplies = false,
+  autoFocus
+}) {
   const { data, status } = useSession()
   const user = data?.user
 
@@ -16,6 +26,7 @@ export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = fals
     handleTweet,
     handleFile,
     handleFileClear,
+    handleKeyDown,
     setValue,
     setFocused,
     value,
@@ -26,7 +37,7 @@ export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = fals
     inputRef,
     focused,
     image
-  } = useCreateTweet({ iniciated, isInTweetPage, reply, addTweet })
+  } = useCreateTweet({ iniciated, isInTweetPage, reply, addTweet, upReplies })
 
   return <div className={styles.container}>
     <LoadingTweet isLoading={isLoading} isSuccess={isSuccess} isError={isError} />
@@ -49,8 +60,11 @@ export function WriteTweetMain ({ iniciated = false, reply, isInTweetPage = fals
       <textarea
         ref={textareaRef}
         spellCheck={false}
+        autoFocus={autoFocus || false}
+        disabled={isLoading}
         placeholder={reply?.isReply ? 'Tweet your reply' : "What's happening?"}
         value={value}
+        onKeyDown={handleKeyDown}
         onChange={e => setValue(e.target.value)}
         onFocus={() => setFocused(prev => ({ ...prev, focused: true }))}
         style={{ marginTop: focused && iniciated ? 23 : 10, minHeight: iniciated ? '120px' : 'unset', flex: isInTweetPage && !focused.footer ? 1 : 'unset' }}

@@ -5,15 +5,15 @@ import { CommentEntry } from './entrys/CommentEntry'
 import { LikeEntry } from './entrys/LikeEntry'
 import { RetweetEntry } from './entrys/RetweetEntry'
 
-export function Interactions ({ likes, comments, retweets, bookmarks, id, isLiked, isBookmarked, openReply, isStretch }) {
+export function Interactions ({ likes, comments, retweets, externalInteractions, bookmarks, id, isLiked, isBookmarked, openReply, isStretch }) {
   return <>
     <div onClick={e => e.stopPropagation()}>
-      <LikeEntry id={id} likes={likes} isLiked={isLiked} />
+      <LikeEntry id={id} likes={likes} isLiked={isLiked} handleAddLike={externalInteractions?.like} />
       <CommentEntry id={id} comments={comments} openReply={openReply} />
       <RetweetEntry id={id} retweets={retweets} />
       {
         !isStretch &&
-          <BookmarkEntry id={id} bookmarks={bookmarks} isBookmarked={isBookmarked} />
+          <BookmarkEntry id={id} bookmarks={bookmarks} isBookmarked={isBookmarked} handleAddBookmark={externalInteractions?.bookmark} />
       }
     </div>
 
