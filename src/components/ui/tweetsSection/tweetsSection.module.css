@@ -1,5 +1,6 @@
 .section {
   width: 100%;
+  overflow-x: hidden;
   min-height: calc(125vh - 1px);
   border-left: var(--borderProperty);
   border-right: var(--borderProperty);

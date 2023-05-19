@@ -17,7 +17,20 @@ import { useContext } from 'react'
 
 export default function TweetPage () {
   const { status } = useSession()
-  const { openReply, setTweet, closeModal, deleteTweetBack, isLoading, tweet, replies, open, threadTweet, divRef, modalName, externalInteractions } = useTweetPage()
+  const {
+    openReply,
+    setTweet,
+    closeModal,
+    deleteTweetBack,
+    isLoading,
+    tweet,
+    replies,
+    open,
+    threadTweet,
+    divRef,
+    modalName,
+    externalInteractions
+  } = useTweetPage()
 
   const { size } = useContext(WindowSizeContext)
 
@@ -38,13 +51,13 @@ export default function TweetPage () {
       }
 
       <main>
-      <TweetPageHeader />
+      <TweetPageHeader isThread={tweet?.reply?.isReplying} />
       {
         isLoading || !tweet
           ? <Spinner style={{ margin: '1rem auto' }} />
           : <>
             {
-              threadTweet && <Tweet tweet={threadTweet} isInTweetReply={true} />
+              threadTweet.map(el => <Tweet key={el._id} tweet={el} isInTweetReply={true} />)
             }
             <div className='refContainer'>
               <div className='ref' ref={divRef}></div>

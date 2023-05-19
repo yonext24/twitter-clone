@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useTweetsContext } from '@/hooks/useTweetsContext'
 
-export function LikeEntry ({ id, isInPage = false, width = '1.25rem', handleAddLike, isLiked, likes }) {
+export function LikeEntry ({ id, isInPage = false, width = '18.75px', handleAddLike, externalAddLike, isLiked, likes }) {
   const { status } = useSession()
   const router = useRouter()
   const { dispatch } = useTweetsContext()
@@ -17,6 +17,7 @@ export function LikeEntry ({ id, isInPage = false, width = '1.25rem', handleAddL
     }
 
     handleAddLike && handleAddLike(id)
+    externalAddLike && externalAddLike(isLiked)
 
     dispatch({ type: 'addLike', payload: id })
     likeTweet(id)
@@ -49,7 +50,6 @@ export function LikeEntry ({ id, isInPage = false, width = '1.25rem', handleAddL
         span {
           padding-left: 4px;
           padding-right: 12px;
-          min-width: calc(1em + 24px);
           font-size: 13px;
         }
         .container:hover .svgContainer {

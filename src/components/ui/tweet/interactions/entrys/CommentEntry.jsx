@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { CommentIcon } from '@/components/icons/tweet/Comment'
 
-export function CommentEntry ({ comments, openReply, isInPage = false, width = '1.25rem' }) {
+export function CommentEntry ({ comments, openReply, isInPage = false, width = '18.75px' }) {
   return <>
 
     <button className='container' onClick={openReply}>
@@ -29,7 +29,6 @@ export function CommentEntry ({ comments, openReply, isInPage = false, width = '
         span {
           padding-left: 4px;
           padding-right: 12px;
-          min-width: calc(1em + 24px);
           font-size: 13px;
         }
         .container:hover .svgContainer {

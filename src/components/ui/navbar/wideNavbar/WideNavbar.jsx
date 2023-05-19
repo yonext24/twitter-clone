@@ -11,18 +11,18 @@ import { WriteIcon } from '@/components/icons/navbar/Write'
 import { useModal } from '@/hooks/useModal'
 import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
-import { ModalBackground } from '../common/ModalBackground'
-import { ProfileModal } from '../modals/ProfileModal'
-import { ImageWithPlaceholder } from '../common/ImageWithPlaceholder'
+import { ModalBackground } from '../../common/ModalBackground'
+import { ProfileModal } from '../../modals/ProfileModal'
+import { ImageWithPlaceholder } from '../../common/ImageWithPlaceholder'
 import { GithubIcon } from '@/components/icons/navbar/Github'
 import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 import Link from 'next/link'
-import styles from './navbar.module.css'
-import { ReactPortal } from '../common/ReactPortal'
-import { TweetModal } from '../modals/TweetModal'
+import styles from './widenavbar.module.css'
+import { ReactPortal } from '../../common/ReactPortal'
+import { TweetModal } from '../../modals/TweetModal'
 import { useRouter } from 'next/router'
 
-export function Navbar () {
+export default function WideNavbar () {
   const { open, closeModal, openModal, modalName } = useModal()
 
   const { data, status } = useSession()

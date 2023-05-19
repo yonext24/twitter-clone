@@ -9,7 +9,7 @@ import { getSingleTweet } from '@/assets/consts'
 
 export function useTweetPage () {
   const [tweet, setTweet] = useState(null)
-  const [threadTweet, setThreadTweet] = useState(null)
+  const [threadTweet, setThreadTweet] = useState([])
   const { openModal, open, modalName, closeModal } = useModal()
 
   const [state, dispatch] = useReducer(TweetsReducer, INITIAL_TWEETS_STATE)
@@ -33,7 +33,7 @@ export function useTweetPage () {
 
   const { data, isLoading } = useQuery(
     ['getSingleTweet', id],
-    () => (id && !tweet ? getSingleTweet(id) : null),
+    () => (id ? getSingleTweet(id) : null),
     { retryDelay: 5000, refetchOnWindowFocus: false, refetchInterval: false, onSuccess: handleSuccess, staleTime: 60 })
 
   useEffect(() => {
@@ -45,13 +45,20 @@ export function useTweetPage () {
 
   useEffect(() => {
     if (tweet && !tweet.reply.isReplyDeleted && tweet.reply.replyingTo) {
-      getSingleTweet(tweet.reply.replyingTo)
+      getSingleTweet(tweet.reply.replyingTo, true)
         .then(setThreadTweet)
     }
   }, [tweet])
 
   useEffect(() => {
-    if (threadTweet) {
+    if (!id) return
+    setThreadTweet([])
+    if (!tweet) return
+    setTweet(null)
+  }, [id])
+
+  useEffect(() => {
+    if (threadTweet.length > 0) {
       divRef.current.scrollIntoView()
     }
   }, [threadTweet])

@@ -164,11 +164,12 @@
     display: block;
   }
 }
-@media only screen and (max-width: 710px) {
+@media only screen and (max-width: 760px) {
   .navbar {
-    padding: 0 2px;
+    width: 90px
   }
 }
+
 @media only screen and (max-height: 620px) {
   .liContainer:nth-of-type(3) {
     display: none;

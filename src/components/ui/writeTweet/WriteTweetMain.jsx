@@ -67,7 +67,12 @@ export function WriteTweetMain ({
         onKeyDown={handleKeyDown}
         onChange={e => setValue(e.target.value)}
         onFocus={() => setFocused(prev => ({ ...prev, focused: true }))}
-        style={{ marginTop: focused && iniciated ? 23 : 10, minHeight: iniciated ? '120px' : 'unset', flex: isInTweetPage && !focused.footer ? 1 : 'unset' }}
+        style={{
+          marginTop: focused && iniciated ? 23 : 10,
+          minHeight: iniciated && !image ? '120px' : 'unset',
+          height: image && 'auto',
+          flex: isInTweetPage && !focused.footer ? 1 : 'unset'
+        }}
       />
       {
         image && <div className={styles.imageContainer}>

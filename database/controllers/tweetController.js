@@ -9,6 +9,7 @@ import { ObjectId } from 'mongodb'
 
 export const getSingleTweet = async (req, res) => {
   const id = req.query.id
+  const getThread = req.query.getThread
   if (!id) return res.status(405).json({ error: 'There are no tweet!' })
 
   const session = await getServerSession(req, res, options)
@@ -38,6 +39,49 @@ export const getSingleTweet = async (req, res) => {
       { path: 'reply.replyingUser', select: ['slug'] }
     ]
   })
+
+  if (getThread) {
+    const threadTweets = [tweet]
+    try {
+      let user
+      if (session) {
+        user = await UserInteractions.findOne({ _id: session.user.id })
+        const isMainTweetLiked = user.likedTweets.some(el => el.tweet.equals(tweet._id))
+        const isMainTweetBookmarked = user.bookmarks.some(el => el.tweet.equals(tweet._id))
+        threadTweets[0] = { ...tweet._doc, isLiked: isMainTweetLiked, isBookmarked: isMainTweetBookmarked }
+      }
+
+      while (true) {
+        if (threadTweets[0].reply.isReplying && !threadTweets[0].reply.isReplyDeleted) {
+          const newTweet = await Tweet.findOne({ _id: threadTweets[0].reply.replyingTo })
+          console.log(newTweet)
+          await newTweet.populate({
+            path: 'author'
+          })
+          await newTweet.populate({
+            path: 'reply.replyingUser',
+            select: 'slug'
+          })
+          await newTweet.populate({
+            path: 'replies',
+            populate: [
+              { path: 'author' },
+              { path: 'reply.replyingUser', select: ['slug'] }
+            ]
+          })
+          if (!user) threadTweets.unshift(newTweet)
+          const isNewTweetLiked = user.likedTweets.some(el => el.tweet.equals(newTweet._id))
+          const isNewTweetBookmarked = user.bookmarks.some(el => el.tweet.equals(newTweet._id))
+
+          threadTweets.unshift({ ...newTweet._doc, isLiked: isNewTweetLiked, isBookmarked: isNewTweetBookmarked })
+        } else break
+      }
+      return res.status(200).json(threadTweets)
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({ error: 'Error while finding thread' })
+    }
+  }
 
   if (session) {
     const user = await UserInteractions.findOne({ _id: session.user.id })

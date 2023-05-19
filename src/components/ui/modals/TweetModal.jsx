@@ -56,6 +56,14 @@ export function TweetModal ({ addTweet, closeModal, reply, upReplies }) {
       min-width: 53px;
       cursor: pointer;
     }
+    @media only screen and (max-width: 500px) {
+      .tweetContainer {
+        max-width: none;
+        top: 0;
+        border-radius: 0;
+
+      }
+    }
 
   `}</style>
   </>

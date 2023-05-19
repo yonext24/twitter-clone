@@ -63,7 +63,7 @@ export function useCreateTweet ({ iniciated, isInTweetPage, addTweet, upReplies,
     })
   }, [mutate, image, user])
   const handleKeyDown = (event) => {
-    if (event.ctrlKey && event.keyCode === 13) {
+    if (event.ctrlKey && event.keyCode === 13 && value.replace(' ', '').length > 0) {
       handleTweet(value, reply)
     }
   }

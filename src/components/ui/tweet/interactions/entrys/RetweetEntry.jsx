@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { RetweetIcon } from '@/components/icons/tweet/Retweet'
 
-export function RetweetEntry ({ retweets, isInPage = false, width = '1.25rem' }) {
+export function RetweetEntry ({ retweets, isInPage = false, width = '18.75px' }) {
   return <>
 
     <button className='container'>
@@ -28,7 +28,6 @@ export function RetweetEntry ({ retweets, isInPage = false, width = '1.25rem' })
         span {
           padding-left: 4px;
           padding-right: 12px;
-          min-width: calc(1em + 24px);
           font-size: 13px;
         }
         .container:hover .svgContainer {

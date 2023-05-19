@@ -2,7 +2,7 @@ import { BackIcon } from '@/components/icons/tweet/Back'
 import { useRouter } from 'next/router'
 
 /* eslint-disable react/no-unknown-property */
-export function TweetPageHeader () {
+export function TweetPageHeader ({ isThread }) {
   const router = useRouter()
 
   return <>
@@ -11,7 +11,7 @@ export function TweetPageHeader () {
     <button className='back' onClick={() => router.back()}>
       <BackIcon width='20px' height='20px' />
     </button>
-    <h3>Tweet</h3>
+    <h3>{isThread ? 'Thread' : 'Tweet'}</h3>
 
   </header>
 

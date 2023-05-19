@@ -3,7 +3,6 @@
   flex-direction: column;
   width: 100%;
   color: var(--mainColor);
-  border-bottom: var(--borderProperty);
   position: sticky;
   top: 0;
   background-color: rgba(0, 0, 0, 0.65);
@@ -27,6 +26,7 @@
 .buttonsContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  border-bottom: var(--borderProperty);
 }
 .button {
   width: 100%;

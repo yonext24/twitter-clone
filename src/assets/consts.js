@@ -18,8 +18,8 @@ export function changeSlug (slug) {
       }
     })
 }
-export function getSingleTweet (id) {
-  return fetch('/api/tweet?id=' + id)
+export function getSingleTweet (id, getThread = false) {
+  return fetch(`/api/tweet?id=${id}${getThread ? '&getThread=1' : ''}`)
     .then(res => res.json())
 }
 export function getTimeline (page) {

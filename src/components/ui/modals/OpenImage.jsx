@@ -12,6 +12,8 @@ import { RetweetEntry } from '../tweet/interactions/entrys/RetweetEntry'
 import { WriteTweetMain } from '../writeTweet/WriteTweetMain'
 import { useOpenImage } from '@/hooks/useOpenImage'
 import { TweetModal } from './TweetModal'
+import { DoubleArrowIcon } from '@/components/icons/tweet/DoubleArrow'
+import { CloseIcon } from '@/components/icons/writeTweet/Close'
 
 export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
   const {
@@ -24,7 +26,9 @@ export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
     addTweet,
     openReply,
     handleAddLike,
-    closeReply
+    closeReply,
+    isTweetOpen,
+    handleClick
   } = useOpenImage({ id, closeModalProp: closeModal, addTweetToTweetPage })
   const image = tweet?.image
 
@@ -44,23 +48,35 @@ export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
           !isLoading && tweet && <>
             <div className='pageContainer'>
               <div className='imageSide'>
+                <div className='buttonsContainer'>
+                  <button>
+                    <div>
+                      <CloseIcon width='20px' height='20px' />
+                    </div>
+                  </button>
+                  <button onClick={handleClick}>
+                    <div>
+                      <DoubleArrowIcon width='20px' height='20px' styles={{ transform: isTweetOpen.open && 'rotate(180deg)' }} />
+                    </div>
+                  </button>
+                </div>
                 <div className='imageContainer' >
                   <ImageWithPlaceholder
                     height={image.height}
                     width={image.width}
                     image={image.src}
-                    styles={{ width: '100%', height: 'auto', maxHeight: 'calc(100vh - 48px)', maxWidth: image.width, objectFit: 'contain', borderRadius: 0, aspectRatio: image.aspectRatio, margin: 'auto' }}
+                    styles={{ width: '100%', height: 'auto', maxHeight: 'calc(100vh - 88px)', maxWidth: image.width, objectFit: 'contain', borderRadius: 0, aspectRatio: image.aspectRatio, margin: 'auto' }}
                     alt='image'
                   />
                 </div>
                 <div className='interactionsContainer' onClick={e => e.stopPropagation()}>
                   <CommentEntry width='1.5rem' openReply={openReply} />
                   <RetweetEntry width='1.5rem' />
-                  <LikeEntry id={tweet._id} likes={tweet.likes} isLiked={tweet.isLiked} isInPage={true} width='1.5rem' handleAddLike={handleAddLike} />
+                  <LikeEntry id={tweet._id} likes={tweet.likes} isLiked={tweet.isLiked} isInPage={true} width='1.5rem' externalAddLike={handleAddLike} />
                 </div>
 
               </div>
-              <div className='dataSide' onClick={e => e.stopPropagation()}>
+              <div className='dataSide'style={{ width: !isTweetOpen.open && 0 }} onClick={e => e.stopPropagation()}>
                 <Tweet tweet={tweet} isInPage={true} withoutImage isStretch/>
                 <TweetPageEntrys {...tweet} />
                 <TweetPageInteractions setTweet={setTweet} openReply={openReply} {...tweet} />
@@ -93,7 +109,7 @@ export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
       .imageSide {
         flex: 1;
         display: grid;
-        grid-template-rows: 1fr 48px;
+        grid-template-rows: 48px 1fr 48px;
       }
       .imageContainer {
         display: flex
@@ -105,6 +121,33 @@ export function OpenImage ({ closeModal, id, addTweetToTweetPage }) {
         overflow-x: hidden;
         overflow-y: auto;
         border-left: 1px solid var(--borderColor)
+      }
+      .buttonsContainer {
+        display: flex;
+        justify-content: space-between;
+        color: var(--mainColor)
+      }
+      .buttonsContainer button {
+        height: 100%;
+        aspect-ratio: 1;
+        color: inherit;
+        cursor: pointer
+      }
+      .buttonsContainer button div {
+        margin: auto 0;
+        color: inherit;
+        height: 36px;
+        width: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(4px);3
+        background-color: rgba(0, 0, 0, 0.75);
+        border-radius: 9999px;
+        transition: background-color .2s;
+      }
+      .buttonsContainer button div:hover {
+        background-color: rgba(39, 44, 48, 0.75);
       }
     
     `}</style>

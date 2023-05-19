@@ -6,7 +6,7 @@ import { WhoFollow } from './whoFollow/WhoFollow'
 import { Help } from './help/Help'
 import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 
-export function Aside () {
+export default function Aside () {
   const { size } = useContext(WindowSizeContext)
 
   if (size < 1000) return null

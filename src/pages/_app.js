@@ -2,7 +2,7 @@ import { TweetsContextProvider } from '@/contexts/TweetsContext'
 import { WindowSizeContextProvider } from '@/contexts/WindowSizeContext'
 import '@/styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
-import { createElement } from 'react'
+import { Suspense, createElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient()
@@ -13,20 +13,23 @@ export default function App ({ Component, pageProps: { session, ...pageProps } }
   return (
     <SessionProvider session={session}>
 
-      <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<p></p>}>
 
-        <WindowSizeContextProvider>
+        <QueryClientProvider client={queryClient}>
 
-          <TweetsContextProvider>
+          <WindowSizeContextProvider>
 
-            {getLayout(createElement(Component, pageProps))}
+            <TweetsContextProvider>
 
-          </TweetsContextProvider>
+              {getLayout(createElement(Component, pageProps))}
 
-        </WindowSizeContextProvider>
+            </TweetsContextProvider>
 
-      </QueryClientProvider>
+          </WindowSizeContextProvider>
 
+        </QueryClientProvider>
+
+      </Suspense>
     </SessionProvider>
   )
 }

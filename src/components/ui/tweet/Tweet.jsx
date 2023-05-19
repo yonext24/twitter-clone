@@ -85,13 +85,13 @@ export function Tweet ({
             {
               isInPage && <ImageWithPlaceholder image={userImage} height={48} width={48} alt='Your profile image' animation='left' />
             }
-          <div style={{ flexDirection: isInPage ? 'column' : 'row', marginLeft: isInPage ? '15px' : '', ...(isStretch && { overflow: 'hidden', maxWidth: 211 }) }}>
+          <div style={{ flexDirection: isInPage ? 'column' : 'row', marginLeft: isInPage ? '15px' : '', overflow: 'hidden', flex: 1, ...(isStretch && { maxWidth: 211 }) }}>
             <Name isStretch={isStretch}>{username}</Name>
             <Slug isStretch={isStretch}>@{slug}</Slug>
               {
                 !isInPage && <>
                   <span>·</span>
-                  <span style={{ ...(isStretch && { whiteSpace: 'nowrap' }) }}>{formattedDate}</span>
+                  <span style={{ whiteSpace: 'nowrap' }}>{formattedDate}</span>
                 </>
               }
           </div>
@@ -125,8 +125,10 @@ export function Tweet ({
                 borderRadius: 16,
                 width: '100%',
                 height: 'auto',
-                aspectRatio:
-              image.aspectRatio
+                maxHeight: '600px',
+                objectFit: 'cover',
+                objectPosition: 'top',
+                aspectRatio: image.aspectRatio
               }}
               animation='bottom'
             />

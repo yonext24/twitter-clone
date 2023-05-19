@@ -10,7 +10,9 @@ export function TweetsSection ({ sectionSelected, setSectionSelected, tweets, er
   const { size } = useContext(WindowSizeContext)
 
   return <section className={styles.section} style={{ minHeight: size > 1000 ? '100%' : '100vh' }} >
-    <TweetSectionHeader sectionSelected={sectionSelected} setSectionSelected={setSectionSelected} />
+    {
+      size > 500 && <TweetSectionHeader sectionSelected={sectionSelected} setSectionSelected={setSectionSelected} />
+    }
     <WriteTweetMain />
     {
       tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />)

@@ -9,7 +9,7 @@ export function BookmarksHeader () {
 
     <header>
       <h1>Bookmarks</h1>
-      <Slug size='14px'>{'@' + user?.slug || ''}</Slug>
+      <Slug styles={{ lineHeight: '13px', color: 'var(--dateColor)' }} size='14px'>{'@' + user?.slug || ''}</Slug>
 
     </header>
 

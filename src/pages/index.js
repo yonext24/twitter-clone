@@ -145,6 +145,30 @@ export default function LoginPage () {
       background-color: black;
       padding: 0 8px;
     }
+    @media only screen and (max-width: 840px) {
+      main {
+        display: flex;
+        justify-content: center
+      }
+      .imageContainer {
+        display: none
+      }
+      .info > div {
+        padding: 2rem 0
+      }
+      .info > div:nth-of-type(2) {
+        align-items: center
+      }
+      .loginContainer {
+        width: 100%
+      }
+    }
+    @media only screen and (max-width: 510px) {
+      h1 {
+        font-size: 3rem;
+        text-align: center
+      }
+    }
 
   `}</style>
   </>

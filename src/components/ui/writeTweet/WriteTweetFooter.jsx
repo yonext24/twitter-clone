@@ -100,6 +100,11 @@ export function WriteTweetFooter ({ disabled, handleClick, isLoading, isInTweetP
     .tweet:disabled {
       opacity: .5;
     }
+    @media only screen and (max-width: 635px) {
+      .icon:nth-of-type(4), .icon:nth-of-type(5) {
+        display: none
+      }
+    }
 
   `}</style>
   </>

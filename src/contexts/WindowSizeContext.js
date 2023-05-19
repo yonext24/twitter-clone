@@ -10,9 +10,13 @@ export const WindowSizeContextProvider = ({ children }) => {
 
     setSize(window.innerWidth)
 
-    window.addEventListener('resize', e => {
+    const onChange = e => {
       setSize(e.target.innerWidth)
-    })
+    }
+
+    window.addEventListener('resize', onChange)
+
+    return () => window.removeEventListener('resize', onChange)
   }, [])
 
   return <WindowSizeContext.Provider value={{ size }}>

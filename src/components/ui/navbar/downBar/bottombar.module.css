@@ -1,0 +1,18 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 8px;
+  z-index: 50;
+  background-color: var(--background);
+  border-top: var(--borderProperty);
+}
+.bar ul {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+.bar ul li {
+  list-style: none;
+}
