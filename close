@@ -1,0 +1,173 @@
+[33mcommit 8868f3fa34c7c45e48b6eef702599fdecd315540[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 19:30:00 2023 -0300
+
+    . :(
+
+[33mcommit 0e252cff8ed375dc6a4c4a7f42c3d85a329a5053[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 19:24:17 2023 -0300
+
+    .
+
+[33mcommit 3162b78dfdbab4123d214c82a51af51096cc15c2[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 19:14:25 2023 -0300
+
+    .
+
+[33mcommit ba0c4cc0e91026181584fa5e514bb2e638939039[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 18:14:57 2023 -0300
+
+    Exported getTweet function to use in getProps
+
+[33mcommit b48006d3bdba0d3e4c27c1be910dba621d732e05[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 15:20:13 2023 -0300
+
+    Added server side rendering in tweet page for SEO
+
+[33mcommit 4057cb1a9947533b6b61c4bfe7bd9e207518193c[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Sun May 28 01:00:31 2023 -0300
+
+    Fixed problems in production because of dbConnect
+
+[33mcommit 63b9c52b31368cebc00c0f2f2c83cbd93d6f3e9b[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Thu May 18 23:33:11 2023 -0300
+
+    Added mobile responsive with dyinamic importing
+
+[33mcommit 986367439482dfe1ad728bea7e8422af3716ec9a[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 14:50:27 2023 -0300
+
+    Add usage of tweetsReducer in pages with tweets
+
+[33mcommit 6d41ee9d9501da42a2b8ca1df99f298dfdd663cb[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 14:47:48 2023 -0300
+
+    Add enter key to publish tweet
+
+[33mcommit 02fd84fb0ebcc1106a18f78177806c52bb6ad2e7[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 14:46:57 2023 -0300
+
+    Moved assets const functions to their own files
+
+[33mcommit 4d97021a4b2966a9abcb8a1ca1b32a31a2ac1760[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 14:45:38 2023 -0300
+
+    Fixed bug with tweetPage
+
+[33mcommit a97989c5eb1040b6f7315b9acc46a5209dd462f8[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 11:16:09 2023 -0300
+
+    Fixed styling problems
+
+[33mcommit 069fbb4f94bc53accc3f9ddfce13e846ef06c369[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 11:15:57 2023 -0300
+
+    Fixed minor bugs
+
+[33mcommit 553e7f9e1e2783a05d163969d8b26ee217688667[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 12 11:14:36 2023 -0300
+
+    Fixed bug with portal
+
+[33mcommit 56853bcca8a22f7e17664c9a78d9710999b04c14[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Wed May 10 14:24:21 2023 -0300
+
+    Fixed modals bug
+
+[33mcommit edcc8213db821ed4e95c0b387fcd4746aa3cf6c8[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Wed May 10 14:24:06 2023 -0300
+
+    Moved reply logic from tweetSchema to "reply"
+
+[33mcommit 5fba650c0b5b6cb11421ee842d67dcdc2bda972f[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon May 8 13:07:01 2023 -0300
+
+    Added bookmarks page and modified useGetTweets
+
+[33mcommit 6d470db9222c995dba1071e59d222d2267ae3a45[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon May 8 13:05:51 2023 -0300
+
+    Moved common used files to "/common"
+
+[33mcommit f6ea777f1d091e8409021988f91fbc5bcc0d1edf[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 5 15:37:05 2023 -0300
+
+    Added bookmarking :)
+
+[33mcommit f6b72a783cf1fc9bfa5a19fb85e600267cedca0c[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Fri May 5 15:36:49 2023 -0300
+
+    Made useCreateSlug use useModalLogic and navbar
+
+[33mcommit ad7e5496ae156d533a638d28bb0e7e9799e44bc7[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Wed May 3 16:01:05 2023 -0300
+
+    Added openImage and better practices
+
+[33mcommit bc38d5d19510a6016a32ea9d9533e65f07b7c27d[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon Apr 24 16:54:09 2023 -0300
+
+    Fixed bug with slugSetted
+
+[33mcommit ed546889107603ebb2eb495524bd59ca14e0623c[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon Apr 24 16:41:52 2023 -0300
+
+    Fixing some styling
+
+[33mcommit 5db2e08f9eb86c1162beee9b3b4a7f6713dbc7e5[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon Apr 24 16:08:38 2023 -0300
+
+    Added tweetPage and more
+
+[33mcommit 62b0a307739c48448b1b45d42ab0c743f002f106[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Thu Apr 13 17:21:10 2023 -0300
+
+    Adding "secret" to deploy
+
+[33mcommit 9c2c0c62618e8a2e6f6e32e7eeeb17289e567c41[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Thu Apr 13 16:59:49 2023 -0300
+
+    Preparing for deploy
+
+[33mcommit 7be93e9b22d78627e984c8b53f0c9d479de567cf[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Thu Apr 13 16:49:48 2023 -0300
+
+    Finished tweetpage
+
+[33mcommit 12c2f61da1b1446ff7d58fcb16cf1cc2bb2ba57e[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Mon Apr 10 22:48:57 2023 -0300
+
+    First commit :)
+
+[33mcommit 001cf9c11c3580bc1bca05e79ecfa934b9f06a32[m
+Author: Yanzz <yonielkpo@gmail.com>
+Date:   Tue Mar 14 18:32:09 2023 -0300
+
+    Initial commit from Create Next App

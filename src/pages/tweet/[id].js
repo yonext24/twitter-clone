@@ -1,6 +1,4 @@
 /* eslint-disable react/no-unknown-property */
-import { getSingleTweet } from '@/assets/consts'
-import { path } from '@/assets/env'
 import { Layout } from '@/components/ui/common/Layout'
 import { ReactPortal } from '@/components/ui/common/ReactPortal'
 import { SEO } from '@/components/ui/common/SEO'
@@ -15,9 +13,10 @@ import { WindowSizeContext } from '@/contexts/WindowSizeContext'
 import { useTweetPage } from '@/hooks/useTweetPage'
 import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
+import { singleTweet } from '../../../database/functions/singleTweet'
+import { waitFunc } from '../../../database/functions/waitFunc'
 
 export default function TweetPage ({ tweet, error }) {
-  console.log(tweet, error)
   const { status } = useSession()
   const {
     openReply,
@@ -112,19 +111,17 @@ TweetPage.getLayout = (page) => {
   </Layout>
 }
 
-export async function getServerSideProps (req) {
-  const id = req.params.id
-  console.log(path)
-  try {
-    const tweet = await getSingleTweet({ id, path })
+export async function getServerSideProps (context) {
+  const id = context.params.id
 
+  try {
+    const tweet = await waitFunc(async () => await singleTweet({ id, req: context.req, res: context.res }), 5000)
     return {
       props: {
-        tweet
+        tweet: JSON.parse(JSON.stringify(tweet))
       }
     }
   } catch (err) {
-    console.log(err)
     return {
       props: { error: err.message }
     }

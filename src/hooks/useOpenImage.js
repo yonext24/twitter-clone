@@ -43,7 +43,7 @@ export function useOpenImage ({ id, closeModalProp, addTweetToTweetPage }) {
 
   const { isLoading, data } = useQuery(
     ['getSingleTweet', id],
-    () => getSingleTweet(id),
+    () => getSingleTweet({ id }),
     { retryDelay: 5000, refetchOnWindowFocus: false, refetchInterval: false, onSuccess: handleSuccess, staleTime: 600000 })
 
   useEffect(() => {
