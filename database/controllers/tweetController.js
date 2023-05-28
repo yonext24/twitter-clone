@@ -10,6 +10,7 @@ import { ObjectId } from 'mongodb'
 export const getSingleTweet = async (req, res) => {
   const id = req.query.id
   const getThread = req.query.getThread
+
   if (!id) return res.status(405).json({ error: 'There are no tweet!' })
 
   const session = await getServerSession(req, res, options)

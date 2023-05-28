@@ -18,10 +18,10 @@ export function ImageWithPlaceholder ({ image, height, width, alt, styles, anima
                   height={height}
                   width={width}
                   alt={alt}
-                  style={{ borderRadius: '9999px', opacity: !loaded && '0', ...styles }}
+                  style={{ borderRadius: '9999px', opacity: !loaded ? '0' : '1', ...styles }}
                 />
 
-                <div className='skeleton' style={{ height, width, borderRadius: '9999px', opacity: loaded && 0, position: 'absolute', top: 0, left: 0, ...styles }} />
+                <div className='skeleton' style={{ height, width, borderRadius: '9999px', opacity: loaded ? 0 : null, position: 'absolute', top: 0, left: 0, ...styles }} />
             </>
 
             )

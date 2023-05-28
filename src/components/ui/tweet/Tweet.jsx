@@ -68,7 +68,8 @@ export function Tweet ({
     {
       open && modalName === 'options' && <ModalBackground closeModal={closeModal} />
     }
-    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`} style={{ borderBottom: (!isInReply && !isInPage && !currentReplie && !isInTweetReply) && 'var(--borderProperty)', cursor: isInPage || isInReply ? 'unset' : 'pointer', padding: isInPage && '12px 6px' }}>
+    <article onClick={handleClick} className={`${styles.tweet} ${isInReply || isInPage ? styles.inReply : ''}`}
+    style={{ borderBottom: (!isInReply && !isInPage && !currentReplie && !isInTweetReply) ? 'var(--borderProperty)' : null, cursor: (isInPage || isInReply) ? 'unset' : 'pointer', padding: isInPage ? '12px 6px' : null }}>
       {
         open && modalName === 'options' && <TweetOptionsModal id={_id} username={username} isOwn={ user?.name === username || user?.role === 'admin' } openModal={openModal} />
       }

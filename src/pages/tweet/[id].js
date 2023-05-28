@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unknown-property */
+import { getSingleTweet } from '@/assets/consts'
+import { path } from '@/assets/env'
 import { Layout } from '@/components/ui/common/Layout'
 import { ReactPortal } from '@/components/ui/common/ReactPortal'
 import { SEO } from '@/components/ui/common/SEO'
 import { TweetModal } from '@/components/ui/modals/TweetModal'
 import { ScreenProtector } from '@/components/ui/screenProtector/ScreenProtector'
-import { Spinner } from '@/components/ui/spinner/Spinner'
 import { Tweet } from '@/components/ui/tweet/Tweet'
 import { TweetPageEntrys } from '@/components/ui/tweet/TweetPageEntrys'
 import { TweetPageInteractions } from '@/components/ui/tweet/TweetPageInteractions'
@@ -15,49 +16,49 @@ import { useTweetPage } from '@/hooks/useTweetPage'
 import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
 
-export default function TweetPage () {
+export default function TweetPage ({ tweet, error }) {
+  console.log(tweet, error)
   const { status } = useSession()
   const {
     openReply,
-    setTweet,
     closeModal,
     deleteTweetBack,
-    isLoading,
-    tweet,
+    setTweet,
     replies,
     open,
     threadTweet,
     divRef,
     modalName,
     externalInteractions
-  } = useTweetPage()
+  } = useTweetPage({ tweet, error })
 
   const { size } = useContext(WindowSizeContext)
 
   return <>
       <SEO title={tweet
-        ? `${tweet.author.username} on Twitter: "${tweet.content}"`
+        ? `${tweet.author.username} on Twitter: "${tweet.content.substring(0, 40)}"`
         : 'Tweet'}
+        image={tweet?.image?.hasImage ? tweet?.image?.src : null }
+        description={tweet?.content}
       />
       {
         status === 'loading' && <ScreenProtector />
       }
 
-      {
+      <ReactPortal wrapperId='writetweet-modal'>
+        {
         open && modalName === 'writeTweet' &&
-        <ReactPortal wrapperId='writetweet-modal'>
           <TweetModal closeModal={closeModal} addTweet={externalInteractions.addComment} reply={{ isReply: true, reply: tweet }} />
-        </ReactPortal>
-      }
+        }
+      </ReactPortal>
 
       <main>
       <TweetPageHeader isThread={tweet?.reply?.isReplying} />
       {
-        isLoading || !tweet
-          ? <Spinner style={{ margin: '1rem auto' }} />
-          : <>
+        tweet &&
+          <>
             {
-              threadTweet.map(el => <Tweet key={el._id} tweet={el} isInTweetReply={true} />)
+              threadTweet.data.map(el => <Tweet key={el._id} tweet={el} isInTweetReply={true} />)
             }
             <div className='refContainer'>
               <div className='ref' ref={divRef}></div>
@@ -71,9 +72,16 @@ export default function TweetPage () {
             </div>
           </>
       }
+      {
+        error && <span className='error'>{error}</span>
+      }
       </main>
 
       <style jsx>{`
+        .error {
+          color: red;
+          text-align: center
+        }
         .ref {
           position: absolute;
           height: 53px;
@@ -102,4 +110,23 @@ TweetPage.getLayout = (page) => {
   return <Layout>
     {page}
   </Layout>
+}
+
+export async function getServerSideProps (req) {
+  const id = req.params.id
+  console.log(path)
+  try {
+    const tweet = await getSingleTweet({ id, path })
+
+    return {
+      props: {
+        tweet
+      }
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      props: { error: err.message }
+    }
+  }
 }

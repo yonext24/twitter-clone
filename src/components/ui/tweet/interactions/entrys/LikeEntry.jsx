@@ -25,7 +25,7 @@ export function LikeEntry ({ id, isInPage = false, width = '18.75px', handleAddL
 
   return <>
 
-    <button className='container' onClick={handleLike} style={{ color: isLiked ? 'rgba(249, 24, 128)' : '' }}>
+    <button className='container' onClick={handleLike} style={{ color: isLiked ? 'rgba(249, 24, 128)' : null }}>
       <div className='svgContainer'>
         <HeartIcon liked={isLiked} width={width} />
       </div>

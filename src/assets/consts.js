@@ -18,9 +18,16 @@ export function changeSlug (slug) {
       }
     })
 }
-export function getSingleTweet (id, getThread = false) {
-  return fetch(`/api/tweet?id=${id}${getThread ? '&getThread=1' : ''}`)
+export async function getSingleTweet ({ id, path, getThread = false }) {
+  return fetch(`${path || ''}/api/tweet?id=${id}${getThread ? '&getThread=1' : ''}`)
     .then(res => res.json())
+    .then(json => {
+      console.log(json)
+      if (!json.error) return json
+      else {
+        throw new Error(json.error)
+      }
+    })
 }
 export function getTimeline (page) {
   return fetch('/api/timeline?page=' + page)

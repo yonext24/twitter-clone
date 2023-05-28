@@ -1,15 +1,16 @@
 import { useEffect, useReducer, useRef, useState } from 'react'
 import { useModal } from './useModal'
 import { useRouter } from 'next/router'
-import { useQuery } from 'react-query'
 import { getExternalInteractions } from '@/assets/getExternalInteractions'
 import { TweetsReducer } from '@/reducers/TweetsReducer'
 import { INITIAL_TWEETS_STATE } from '@/assets/INITIAL_TWEETS_STATE'
 import { getSingleTweet } from '@/assets/consts'
 
-export function useTweetPage () {
-  const [tweet, setTweet] = useState(null)
-  const [threadTweet, setThreadTweet] = useState([])
+export function useTweetPage ({ tweet, error }) {
+  const [threadTweet, setThreadTweet] = useState({
+    fetched: false,
+    data: []
+  })
   const { openModal, open, modalName, closeModal } = useModal()
 
   const [state, dispatch] = useReducer(TweetsReducer, INITIAL_TWEETS_STATE)
@@ -23,45 +24,32 @@ export function useTweetPage () {
   const openReply = () => {
     openModal('writeTweet')
   }
-  const handleSuccess = res => {
-    setTweet(res)
-    dispatch({ type: 'setTweets', payload: res?.replies || [] })
-  }
+
+  useEffect(() => {
+    dispatch({ type: 'setTweets', payload: tweet?.replies || [] })
+  }, [tweet])
+
   const externalInteractions = getExternalInteractions(dispatch)
 
   const deleteTweetBack = () => router.back()
 
-  const { data, isLoading } = useQuery(
-    ['getSingleTweet', id],
-    () => (id ? getSingleTweet(id) : null),
-    { retryDelay: 5000, refetchOnWindowFocus: false, refetchInterval: false, onSuccess: handleSuccess, staleTime: 60 })
-
   useEffect(() => {
-    if (data && !tweet) {
-      setTweet(data)
-      dispatch({ type: 'setTweets', payload: data.replies })
-    }
-  }, [data])
-
-  useEffect(() => {
-    if (tweet && !tweet.reply.isReplyDeleted && tweet.reply.replyingTo) {
-      getSingleTweet(tweet.reply.replyingTo, true)
-        .then(setThreadTweet)
+    if (tweet && !tweet.reply.isReplyDeleted && tweet.reply.replyingTo && !threadTweet.fetched) {
+      getSingleTweet({ id: tweet.reply.replyingTo, getThread: true })
+        .then(data => setThreadTweet({ fetched: true, data }))
     }
   }, [tweet])
 
   useEffect(() => {
     if (!id) return
-    setThreadTweet([])
-    if (!tweet) return
-    setTweet(null)
+    setThreadTweet({ fetched: false, data: [] })
   }, [id])
 
   useEffect(() => {
-    if (threadTweet.length > 0) {
+    if (!error) {
       divRef.current.scrollIntoView()
     }
   }, [threadTweet])
 
-  return { openReply, setTweet, openModal, closeModal, deleteTweetBack, isLoading, tweet, replies, open, threadTweet, divRef, modalName, externalInteractions }
+  return { openReply, openModal, closeModal, deleteTweetBack, tweet, replies, open, threadTweet, divRef, modalName, externalInteractions }
 }
