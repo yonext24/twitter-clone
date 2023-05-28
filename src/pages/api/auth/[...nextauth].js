@@ -52,11 +52,15 @@ export const options = {
 
         return true
       } catch (err) {
-        console.log(err)
         return false
       }
     },
     async session ({ session, user }) {
+      try {
+        await dbConnect()
+      } catch {
+        return { ...session, error: true }
+      }
       const interactions = await UserInteractions.findOne({ _id: user.id })
       session.user = { ...user, slug: interactions.slug, hasSlug: interactions.slugSetted }
       return session

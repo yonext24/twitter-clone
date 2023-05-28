@@ -302,6 +302,8 @@ export const deleteTweet = async (req, res) => {
   if (!session) return res.status(401).json({ error: 'You are not logged!' })
 
   try {
+    await dbConnect()
+
     const tweet = await Tweet.findOne({ _id: tweetId })
     if (tweet.author._id.toString() !== session.user.id && session.user.role !== 'admin') return res.status(406).json({ error: 'You are not authorized' })
 
@@ -344,6 +346,8 @@ export const bookmarkTweet = async (req, res) => {
   if (!session) return res.status(401).json({ error: 'You are not logged!' })
 
   try {
+    await dbConnect()
+
     const userHasBookmarked = await UserInteractions.exists({
       _id: session.user.id,
       bookmarks: { $elemMatch: { tweet: tweetId } }
