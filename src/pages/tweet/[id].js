@@ -112,10 +112,12 @@ TweetPage.getLayout = (page) => {
 }
 
 export async function getServerSideProps (context) {
+  const req = context.req
+  const res = context.res
   const id = context.params.id
 
   try {
-    const tweet = await waitFunc(async () => await singleTweet({ id, req: context.req, res: context.res }), 5000)
+    const tweet = await waitFunc(async () => await singleTweet({ id, req, res }), 5000)
     return {
       props: {
         tweet: JSON.parse(JSON.stringify(tweet))

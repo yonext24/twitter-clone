@@ -1,15 +1,15 @@
-import { options } from '@/assets/navbarEntrys'
 import { isValidObjectId } from 'mongoose'
 import { getServerSession } from 'next-auth'
 import UserInteractions from '../models/UserInteractions'
 import Tweet from '../models/Tweet'
 import dbConnect from '../dbConnect'
+import { options } from '@/pages/api/auth/[...nextauth]'
 
 export const singleTweet = async ({ id, getThread, req, res }) => {
   if (!id) throw new Error('There are no tweet!')
-  const session = await getServerSession(req, res, options)
-
   if (!isValidObjectId(id)) throw new Error(`The id: "${id}" is not a valid ObjectId.`)
+
+  const session = await getServerSession(req, res, options)
 
   try {
     await dbConnect()
