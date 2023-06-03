@@ -23,6 +23,10 @@ export const options = {
     })
   ],
   adapter: MongoDBAdapter(clientPromise),
+  session: {
+    maxAge: 45 * 25 * 60 * 60,
+    updateAge: 24 * 60 * 60
+  },
   callbacks: {
     async signIn (user) {
       try {
@@ -38,7 +42,7 @@ export const options = {
           while (slugExists) {
             lastCheckedName = myName + count
             slugExists = await UserInteractions.exists({ slug: lastCheckedName })
-            count++
+            count = count * (Math.random() * 5)
           }
           const newUser = UserInteractions({
             username: user.user.name,
